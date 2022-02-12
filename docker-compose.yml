@@ -1,0 +1,102 @@
+networks:
+  bigdata:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.10.0/24
+          gateway: 192.168.10.1
+
+services:
+  mysql:
+    build:
+      context: mysql
+    image: mysql:${TAG}
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=alex
+      - MYSQL_ROOT_HOST=%
+      - MYSQL_DATABASE=hive
+      - MYSQL_USER=hive
+      - MYSQL_PASSWORD=alex
+    container_name: mysql
+    hostname: mysql
+    networks:
+      bigdata:
+        ipv4_address: 192.168.10.5
+    extra_hosts:
+      - "bigdata:192.168.10.10"
+    ports:
+      - "3306:3306"
+      - "33060:33060"
+      - "33061:33061"
+
+  bigdata:
+    build:
+      context: bigdata
+    image: bigdata:${TAG}
+    container_name: bigdata
+    hostname: bigdata
+    environment:
+      - JAVA_HOME=/opt/run/jdk
+      - ZOOKEEPER_HOME=/opt/run/zookeeper
+      - HADOOP_HOME=/opt/run/hadoop
+      - HADOOP_CONF_DIR=/opt/run/hadoop/etc/hadoop
+      - HBASE_HOME=/opt/run/hbase
+      - HIVE_HOME=/opt/run/hive
+      - KAFKA_HOME=/opt/run/kafka
+      - SPARK2_HOME=/opt/run/spark
+      - SPARK3_HOME=/opt/run/spark3
+      - FLINK_HOME=/opt/run/flink
+      - PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/run/jdk/bin:/opt/run/zookeeper/bin:/opt/run/hadoop/bin:/opt/run/hbase/bin:/opt/run/hive/bin:/opt/run/kafka/bin
+    networks:
+      bigdata:
+        ipv4_address: 192.168.10.10
+    extra_hosts:
+      - "mysql:192.168.10.5"
+    depends_on:
+      - mysql
+    ports:
+      # HDFS
+      - "8020:8020"
+      - "50070:50070"
+      - "50010:50010"
+      - "50075:50075"
+      - "50475:50475"
+      - "50020:50020"
+      - "8485:8485"
+      - "8480:8480"
+      # YARN
+      - "8032:8032"
+      - "8030:8030"
+      - "8031:8031"
+      - "8033:8033"
+      - "8088:8088"
+      - "8040:8040"
+      - "8042:8042"
+      - "8041:8041"
+      - "10020:10020"
+      - "19888:19888"
+      # HIVE
+      - "10000:10000"
+      - "9083:9083"
+      # HBASE
+      - "60000:60000"
+      - "60010:60010"
+      - "60020:60020"
+      - "60030:60030"
+      # ZOOKEEPER
+      - "2181:2181"
+      - "2888:2888"
+      - "3888:3888"
+      # KAFKA
+      - "9092:9092"
+      # SPARK
+      - "8080:8080"
+      - "4040:4040"
+      - "18080:18080"
+      - "8081:8081"
+      # FLINK
+      - "6123:6123"
+      - "8082:8082"
+
