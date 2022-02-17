@@ -21,6 +21,11 @@ if [ ! -f  "/usr/bin/vim" ] ;then
   cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
   chmod 600 ~/.ssh/authorized_keys
   echo "    StrictHostKeyChecking no" >> /etc/ssh/ssh_config
+
+  # For root login
+  sed -i 's/#PubkeyAuthentication yes/PubkeyAuthentication yes/' /etc/ssh/sshd_config
+  sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
+
   mkdir /opt/installs
   mkdir /opt/run
 fi
