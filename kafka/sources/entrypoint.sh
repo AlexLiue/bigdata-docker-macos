@@ -18,6 +18,7 @@ sh /etc/profile
 
 ## Wait Zookeeper
 wait_for "zoo" "2181" "zookeeper"
+sleep 20  # Wait last kafka connection timeout, for new connection session
 
 ## Start Kafka
 /opt/run/kafka/bin/kafka-server-start.sh -daemon /opt/run/kafka/config/server.properties
