@@ -2,46 +2,65 @@
 # BigData Docker Env For MacOS M1 
 大数据平台 Docker 集成基础环境(Hadoop, Spark, Hive, Flink, Kafka, Zookeeper, Debezium, Mysql), MacOS M1 环境.
 
+
+###  Docker 运行示列
+```shell
+ > docker ps
+CONTAINER ID   IMAGE             COMMAND                  CREATED         STATUS                   PORTS                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                NAMES
+761f0ac96d8e   bigdata_hadoop    "./entrypoint.sh"        2 minutes ago   Up 2 minutes (healthy)   0.0.0.0:4040->4040/tcp, 0.0.0.0:6123->6123/tcp, 0.0.0.0:8020->8020/tcp, 0.0.0.0:8030-8033->8030-8033/tcp, 0.0.0.0:8040-8042->8040-8042/tcp, 0.0.0.0:8082->8082/tcp, 0.0.0.0:8088->8088/tcp, 0.0.0.0:8090->8090/tcp, 0.0.0.0:8480->8480/tcp, 0.0.0.0:8485->8485/tcp, 0.0.0.0:9083->9083/tcp, 0.0.0.0:10000->10000/tcp, 0.0.0.0:10020->10020/tcp, 0.0.0.0:16000->16000/tcp, 0.0.0.0:16010->16010/tcp, 0.0.0.0:16020->16020/tcp, 0.0.0.0:16030->16030/tcp, 0.0.0.0:18080->18080/tcp, 0.0.0.0:19888->19888/tcp, 0.0.0.0:50010->50010/tcp, 0.0.0.0:50020->50020/tcp, 0.0.0.0:50070->50070/tcp, 0.0.0.0:50075->50075/tcp, 0.0.0.0:50475->50475/tcp, 0.0.0.0:1022->22/tcp   hadoop
+917fc1be0613   bigdata_kafka     "./entrypoint.sh"        2 minutes ago   Up 2 minutes (healthy)   0.0.0.0:8081->8081/tcp, 0.0.0.0:8083->8083/tcp, 0.0.0.0:9092->9092/tcp                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               kafka
+8a66ecb75149   bigdata_mysql     "/entrypoint.sh mysq…"   2 minutes ago   Up 2 minutes (healthy)   0.0.0.0:3306->3306/tcp, 0.0.0.0:33060-33061->33060-33061/tcp                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         mysql
+dbee109f50b6   zookeeper:3.5.9   "/docker-entrypoint.…"   2 minutes ago   Up 2 minutes             0.0.0.0:2181->2181/tcp, 0.0.0.0:2888->2888/tcp, 0.0.0.0:3888->3888/tcp, 0.0.0.0:8080->8080/tcp                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       zoo
+```
+### 环境IP地址总汇
+- `mysql`: 192.168.100.10  
+- `zoo`: 192.168.100.20
+- `kafka`: 192.168.100.30  
+- `hadoop`: 192.168.100.60
+
+### Hadoop 环境
+```shell
+root@hadoop:/opt/run# ls -lrt
+total 0
+lrwxrwxrwx 1 root root 23 Feb 17 14:58 jdk8 -> /opt/installs/jdk-8u312
+lrwxrwxrwx 1 root root 25 Feb 17 14:58 jdk11 -> /opt/installs/jdk-11.0.13
+lrwxrwxrwx 1 root root 13 Feb 17 14:58 jdk -> /opt/run/jdk8
+lrwxrwxrwx 1 root root 26 Feb 17 14:58 hadoop -> /opt/installs/hadoop-2.7.5
+lrwxrwxrwx 1 root root 25 Feb 17 14:58 hbase -> /opt/installs/hbase-1.4.9
+lrwxrwxrwx 1 root root 24 Feb 17 14:58 hive -> /opt/installs/hive-3.1.1
+lrwxrwxrwx 1 root root 39 Feb 17 14:58 spark2 -> /opt/installs/spark-2.4.8-bin-hadoop2.7
+lrwxrwxrwx 1 root root 39 Feb 17 14:59 spark3 -> /opt/installs/spark-3.1.2-bin-hadoop2.7
+lrwxrwxrwx 1 root root 15 Feb 17 14:59 spark -> /opt/run/spark3
+lrwxrwxrwx 1 root root 26 Feb 17 14:59 flink -> /opt/installs/flink-1.14.3
+```
+
+### Kafka 环境
+```shell
+root@kafka:/opt/run# ls -rlt
+total 0
+lrwxrwxrwx 1 root root 31 Feb 17 07:18 jdk8 -> /opt/installs/openjdk-8u312-b07
+lrwxrwxrwx 1 root root 13 Feb 17 07:18 jdk -> /opt/run/jdk8
+lrwxrwxrwx 1 root root 30 Feb 17 07:18 kafka -> /opt/installs/kafka_2.12-2.6.3
+lrwxrwxrwx 1 root root 29 Feb 17 07:18 confluent -> /opt/installs/confluent-7.0.1
+lrwxrwxrwx 1 root root 28 Feb 17 07:18 debezium -> /opt/installs/debezium-1.8.0
+```
+
 ### 清理 Docker 所有内容
 ```shell
 docker system prune --all --volumes 
 ```
 ### Rebuild 重新编译
 
+```shell
 docker compose stop
-
 docker rm hadoop
 docker rmi bigdata_hadoop
-
 docker rm kafka
 docker rmi bigdata_kafka
-
 docker rm zoo
-
 docker rm mysql
 docker rmi bigdata_mysql
-
 docker compose up -d
-
-
-
-docker rm hadoop
-docker rm kafka
-docker rm zoo
-docker rm mysql
-
-
-```shell
-docker compose stop 
-docker rm bigdata
-docker rm mysql
-docker rmi bigdata:1.0
-docker rmi mysql:1.0
-docker compose up -d
-docker logs -f bigdata
-
-docker compose stop 
-docker compose up 
 ```
 
 ###  进入容器
@@ -86,6 +105,4 @@ cd88a6fb7584   bigdata_bridge-net   bridge    local
 docker volume ls
 DRIVER    VOLUME NAME
 ```
-
-### 安装说明
 
