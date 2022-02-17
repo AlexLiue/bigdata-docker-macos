@@ -8,6 +8,29 @@ docker system prune --all --volumes
 ```
 ### Rebuild 重新编译
 
+docker compose stop
+
+docker rm hadoop
+docker rmi bigdata_hadoop
+
+docker rm kafka
+docker rmi bigdata_kafka
+
+docker rm zoo
+
+docker rm mysql
+docker rmi bigdata_mysql
+
+docker compose up -d
+
+
+
+docker rm hadoop
+docker rm kafka
+docker rm zoo
+docker rm mysql
+
+
 ```shell
 docker compose stop 
 docker rm bigdata

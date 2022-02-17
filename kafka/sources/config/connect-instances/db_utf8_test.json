@@ -2,14 +2,14 @@
   "name": "db_utf8",
   "config": {
     "connector.class": "io.debezium.connector.mysql.MySqlConnector",
-    "database.hostname": "192.168.10.5",
+    "database.hostname": "mysql",
     "database.port": "3306",
     "database.user": "root",
     "database.password": "alex",
     "database.server.id": "2001",
     "database.server.name": "test",
     "database.include.list": "db_utf8_test",
-    "database.history.kafka.bootstrap.servers": "bigdata:9092",
+    "database.history.kafka.bootstrap.servers": "kafka:9092",
     "database.history.kafka.topic": "db_history.db_utf8_test",
     "include.schema.changes": "true"
   }

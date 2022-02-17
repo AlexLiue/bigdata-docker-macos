@@ -1,62 +1,116 @@
 networks:
-  bigdata:
+  docker:
     driver: bridge
     ipam:
       driver: default
       config:
-        - subnet: 192.168.10.0/24
-          gateway: 192.168.10.1
+        - subnet: 192.168.100.0/24
+          gateway: 192.168.100.1
 
 services:
   mysql:
     build:
       context: mysql
-    image: mysql:${TAG}
-    restart: always
+    container_name: mysql
+    hostname: mysql
+    networks:
+      docker:
+        ipv4_address: 192.168.100.10
+    extra_hosts:
+      - "mysql:192.168.100.10"
+      - "zoo:192.168.100.20"
+      - "kafka:192.168.100.30"
+      - "hadoop:192.168.100.60"
     environment:
       - MYSQL_ROOT_PASSWORD=alex
       - MYSQL_ROOT_HOST=%
       - MYSQL_DATABASE=hive
       - MYSQL_USER=hive
       - MYSQL_PASSWORD=alex
-    container_name: mysql
-    hostname: mysql
-    networks:
-      bigdata:
-        ipv4_address: 192.168.10.5
-    extra_hosts:
-      - "bigdata:192.168.10.10"
     ports:
       - "3306:3306"
       - "33060:33060"
       - "33061:33061"
 
-  bigdata:
-    build:
-      context: bigdata
-    image: bigdata:${TAG}
-    container_name: bigdata
-    hostname: bigdata
+  zoo:
+    image: zookeeper:3.5.9
+    container_name: zoo
+    hostname: zoo
+    networks:
+      docker:
+        ipv4_address: 192.168.100.20
+    extra_hosts:
+      - "mysql:192.168.100.10"
+      - "zoo:192.168.100.20"
+      - "kafka:192.168.100.30"
+      - "hadoop:192.168.100.60"
+    ports:
+      - 2181:2181
+      - 2888:2888
+      - 3888:3888
+      - 8080:8080
     environment:
+      ZOO_MY_ID: 1
+      ZOO_SERVERS: server.1=zoo1:2888:3888;2181
+
+  kafka:
+    build:
+      context: kafka
+    container_name: kafka
+    hostname: kafka
+    depends_on:
+      - zoo
+    networks:
+      docker:
+        ipv4_address: 192.168.100.30
+    extra_hosts:
+      - "mysql:192.168.100.10"
+      - "zoo:192.168.100.20"
+      - "kafka:192.168.100.30"
+      - "hadoop:192.168.100.60"
+    environment:
+      - USER=root
       - JAVA_HOME=/opt/run/jdk
-      - ZOOKEEPER_HOME=/opt/run/zookeeper
+      - PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/run/jdk/bin:/opt/run/kafka/bin
+    ports:
+      # KAFKA BOOTSTRAP
+      - "9092:9092"
+      # CONFLUENT SCHEMA REGISTRY
+      - "8081:8081"
+      # KAFKA AVRO CONNECTOR
+      - "8083:8083"
+
+  hadoop:
+    build:
+      context: hadoop
+    container_name: hadoop
+    hostname: hadoop
+    depends_on:
+      - mysql
+      - zoo
+    networks:
+      docker:
+        ipv4_address: 192.168.100.60
+    extra_hosts:
+      - "mysql:192.168.100.10"
+      - "zoo:192.168.100.20"
+      - "kafka:192.168.100.30"
+      - "hadoop:192.168.100.60"
+    environment:
+      - USER=root
+      - JAVA_HOME=/opt/run/jdk
       - HADOOP_HOME=/opt/run/hadoop
       - HADOOP_CONF_DIR=/opt/run/hadoop/etc/hadoop
       - HBASE_HOME=/opt/run/hbase
       - HIVE_HOME=/opt/run/hive
-      - KAFKA_HOME=/opt/run/kafka
       - SPARK2_HOME=/opt/run/spark
       - SPARK3_HOME=/opt/run/spark3
+      - SPARK_MASTER_WEBUI_PORT=8090
       - FLINK_HOME=/opt/run/flink
-      - PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/run/jdk/bin:/opt/run/zookeeper/bin:/opt/run/hadoop/bin:/opt/run/hbase/bin:/opt/run/hive/bin:/opt/run/kafka/bin
-    networks:
-      bigdata:
-        ipv4_address: 192.168.10.10
-    extra_hosts:
-      - "mysql:192.168.10.5"
-    depends_on:
-      - mysql
+      - PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/run/jdk/bin:/opt/run/hadoop/bin:/opt/run/hbase/bin:/opt/run/hive/bin
     ports:
+      # SSH
+      - "1022:22"
       # HDFS
       - "8020:8020"
       - "50070:50070"
@@ -67,35 +121,28 @@ services:
       - "8485:8485"
       - "8480:8480"
       # YARN
-      - "8032:8032"
       - "8030:8030"
       - "8031:8031"
+      - "8032:8032"
       - "8033:8033"
-      - "8088:8088"
       - "8040:8040"
       - "8042:8042"
       - "8041:8041"
+      - "8088:8088"
       - "10020:10020"
       - "19888:19888"
       # HIVE
-      - "10000:10000"
       - "9083:9083"
+      - "10000:10000"
       # HBASE
-      - "60000:60000"
-      - "60010:60010"
-      - "60020:60020"
-      - "60030:60030"
-      # ZOOKEEPER
-      - "2181:2181"
-      - "2888:2888"
-      - "3888:3888"
-      # KAFKA
-      - "9092:9092"
+      - "16000:16000"
+      - "16010:16010"
+      - "16020:16020"
+      - "16030:16030"
       # SPARK
-      - "8080:8080"
+      - "8090:8090"
       - "4040:4040"
       - "18080:18080"
-      - "8081:8081"
       # FLINK
       - "6123:6123"
       - "8082:8082"
