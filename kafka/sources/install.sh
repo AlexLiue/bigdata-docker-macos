@@ -46,7 +46,7 @@ if [ ! -d "/opt/run/debezium" ] ;then
 fi
 
 apt-get update
-apt-get install -y netcat curl jq net-tools lsof vim
+apt-get install -y netcat curl jq net-tools lsof vim mysql-client
 
 if [ -d "/opt/sources" ] ;then
   rm -f /opt/sources
