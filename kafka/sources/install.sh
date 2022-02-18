@@ -48,8 +48,10 @@ fi
 apt-get update
 apt-get install -y netcat curl jq net-tools lsof vim mysql-client
 
+
 if [ -d "/opt/sources" ] ;then
-  rm -f /opt/sources
+  mv /opt/sources/example /opt/
+  rm -rf /opt/sources
 fi
 
 chmod 755 /opt/*.sh

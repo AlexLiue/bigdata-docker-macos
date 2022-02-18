@@ -20,3 +20,10 @@ mysql -hmysql -uroot -palex <<EOF
   ) ENGINE=InnoDB DEFAULT CHARSET=gb18030 COLLATE=gb18030_bin;
   INSERT INTO tbl_test (C1, C2, C3, C4) VALUES ('v1', 'v2', '1', '12');
 EOF
+
+
+mysql -hmysql -uroot -palex <<EOF
+  CREATE USER salve IDENTIFIED BY 'salve';
+  GRANT SELECT, REPLICATION SLAVE, REPLICATION CLIENT ON *.* TO 'salve'@'%';
+  FLUSH PRIVILEGES;
+EOF
