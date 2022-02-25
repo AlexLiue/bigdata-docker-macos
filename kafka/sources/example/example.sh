@@ -7,9 +7,9 @@ curl -X GET kafka:8083/connectors/db_utf8 | jq
 curl -X GET kafka:8083/connectors/db_gbk | jq
 curl -X GET kafka:8083/connectors/db_gb18030 | jq
 
-curl -X POST kafka:8083/connectors/db_utf8/restart
-curl -X POST kafka:8083/connectors/db_gbk/restart
-curl -X POST kafka:8083/connectors/db_gb18030/restart
+curl -X POST kafka:8083/connectors/db_utf8/tasks/0/restart
+curl -X POST kafka:8083/connectors/db_gbk/tasks/0/restart
+curl -X POST kafka:8083/connectors/db_gb18030/tasks/0/restart
 
 curl -X GET kafka:8083/connectors/db_utf8/status | jq
 curl -X GET kafka:8083/connectors/db_gbk/status | jq
