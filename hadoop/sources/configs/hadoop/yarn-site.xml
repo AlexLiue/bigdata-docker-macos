@@ -52,5 +52,8 @@
         <name>yarn.nodemanager.log-aggregation.roll-monitoring-interval-seconds</name>
         <value>30</value>
     </property>
-
+    <property>
+        <name>yarn.log.server.url</name>
+        <value>http://hadoop:19888/jobhistory/logs</value>
+    </property>
 </configuration>
