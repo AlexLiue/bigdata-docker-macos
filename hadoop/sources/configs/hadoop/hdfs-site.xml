@@ -50,4 +50,8 @@
         <value>4096</value>
     </property>
 
+    <property>
+        <name>dfs.datanode.directoryscan.throttle.limit.ms.per.sec</name>
+        <value>1000</value>
+    </property>
 </configuration>
