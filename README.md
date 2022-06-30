@@ -169,3 +169,10 @@ docker volume ls
 DRIVER    VOLUME NAME
 ```
 
+
+## Mysql GTID 设置查询
+
+```shell
+show variables like 'log_bin';
+```
+
