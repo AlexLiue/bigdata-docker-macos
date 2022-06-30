@@ -40,9 +40,9 @@ fi
 
 ## Install Kafka Connector Plugins: Debezium
 if [ ! -d "/opt/run/debezium" ] ;then
-  mkdir /opt/installs/debezium-1.8.0
-  tar -zxf /opt/sources/packages/debezium-connector-mysql-1.8.0.Final-plugin.tar.gz -C /opt/installs/debezium-1.8.0 >/dev/null
-  ln -s /opt/installs/debezium-1.8.0 /opt/run/debezium
+  mkdir /opt/installs/debezium-1.9.4
+  tar -zxf /opt/sources/packages/debezium-connector-mysql-1.9.4.Final-plugin.tar.gz -C /opt/installs/debezium-1.9.4 >/dev/null
+  ln -s /opt/installs/debezium-1.9.4 /opt/run/debezium
 fi
 
 apt-get update

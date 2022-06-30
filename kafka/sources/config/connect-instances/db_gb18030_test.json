@@ -11,6 +11,8 @@
     "database.include.list": "db_gb18030_test",
     "database.history.kafka.bootstrap.servers": "kafka:9092",
     "database.history.kafka.topic": "db_history.db_gb18030_test",
-    "include.schema.changes": "true"
+    "include.schema.changes": "true",
+    "snapshot.mode": "when_needed",
+    "snapshot.locking.mode": "none"
   }
 }

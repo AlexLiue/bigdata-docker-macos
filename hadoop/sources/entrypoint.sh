@@ -56,20 +56,27 @@ wait_for hadoop 8020 "hadoop-hdfs"
 wait_for hadoop 50070 "hadoop-hdfs"
 
 
-## Start YARN Hive  HBase
+## Start YARN
 /opt/run/hadoop/sbin/start-yarn.sh
+wait_for hadoop 8088 "hadoop-yarn"
+
+## Start Job history
 /opt/run/hadoop/sbin/mr-jobhistory-daemon.sh start historyserver
 if [ ! -d "/opt/run/hive/logs" ] ;then  ## Hive 未曾启动, 初始化 Hive Environment.
   init_hive_env
 fi
-nohup /opt/run/hive/bin/hive --service metastore >/opt/run/hive/logs/hive-metastore.log 2>&1 &
-nohup /opt/run/hive/bin/hive --service hiveserver2 >/opt/run/hive/logs/hive-hiveserver2.log 2>&1 &
-/opt/run/hbase/bin/start-hbase.sh
-
-wait_for hadoop 8088 "hadoop-yarn"
 wait_for hadoop 19888 "hadoop-history-server"
+
+## Start hive metastore
+nohup /opt/run/hive/bin/hive --service metastore >/opt/run/hive/logs/hive-metastore.log 2>&1 &
 wait_for hadoop 9083 "hive-metastore"
+
+## Start hive hiveserver2
+nohup /opt/run/hive/bin/hive --service hiveserver2 >/opt/run/hive/logs/hive-hiveserver2.log 2>&1 &
 wait_for hadoop 10000 "hive-server2"
+
+## Start hive hbase
+/opt/run/hbase/bin/start-hbase.sh
 wait_for hadoop 16000 "hbase"
 wait_for hadoop 16020 "hbase"
 
