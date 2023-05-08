@@ -61,9 +61,26 @@ docker rmi bigdata_kafka
 docker rm zoo
 docker rm mysql
 docker rmi bigdata_mysql
+
+docker rm presto
+docker rmi bigdata_presto
+
+docker rm redis
+docker rmi bigdata_redis
+
 docker compose up -d
 
 ```
+
+
+
+create table tbl_test(id int, name string);
+insert into tbl_test(id,name) values(1,'a');
+insert into tbl_test(id,name) values(2,'b');
+insert into tbl_test(id,name) values(3,'c');
+select * from default.tbl_test;
+select sum(id) from default.tbl_test;
+
 
 ### 目录结构 
 ```text
@@ -174,5 +191,32 @@ DRIVER    VOLUME NAME
 
 ```shell
 show variables like 'log_bin';
+```
+
+
+
+## Hive 
+
+```shell
+beeline -u jdbc:hive2://hadoop:10000/default -nhive -phive
+
+```
+
+### Presto
+
+```shell
+docker rm presto
+docker rmi bigdata_presto
+
+
+presto-cli --server localhost:8080 --catalog hive --schema test
+
+
+git clone https://github.com/prestodb/presto prestodb
+
+/opt/run/hive/bin/beeline -u jdbc:hive2://hadoop:10000/default -nhive -phive
+
+ hive --hiveconf hive.root.logger=DEBUG,console
+
 ```
 

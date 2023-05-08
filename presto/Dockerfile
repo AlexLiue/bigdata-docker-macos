@@ -1,6 +1,6 @@
-FROM ubuntu:20.04
+FROM ahanaio/prestodb-sandbox:0.275
 
-MAINTAINER "pcliu"
+EXPOSE 8080
 
 WORKDIR /opt
 ADD sources /opt/sources
@@ -9,6 +9,12 @@ ADD sources/*.sh /opt/
 RUN /usr/bin/bash /opt/install.sh 2>&1 | tee /opt/install.log
 
 HEALTHCHECK CMD /opt/healthcheck.sh
-ENTRYPOINT ["/usr/bin/bash", "/opt/entrypoint.sh", "|", "tee", "/opt/entrypoint.log" ]
+
+ENTRYPOINT ["/opt/entrypoint.sh"]
+
+
+
+
+
 
 

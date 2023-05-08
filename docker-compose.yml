@@ -21,6 +21,7 @@ services:
       - "zoo:192.168.100.20"
       - "kafka:192.168.100.30"
       - "hadoop:192.168.100.60"
+      - "presto:192.168.100.70"
     environment:
       - MYSQL_ROOT_PASSWORD=alex
       - MYSQL_ROOT_HOST=%
@@ -44,6 +45,7 @@ services:
       - "zoo:192.168.100.20"
       - "kafka:192.168.100.30"
       - "hadoop:192.168.100.60"
+      - "presto:192.168.100.70"
     ports:
       - 2181:2181
       - 2888:2888
@@ -68,6 +70,7 @@ services:
       - "zoo:192.168.100.20"
       - "kafka:192.168.100.30"
       - "hadoop:192.168.100.60"
+      - "presto:192.168.100.70"
     environment:
       - USER=root
       - JAVA_HOME=/opt/run/jdk
@@ -95,7 +98,7 @@ services:
       - "mysql:192.168.100.10"
       - "zoo:192.168.100.20"
       - "kafka:192.168.100.30"
-      - "hadoop:192.168.100.60"
+      - "presto:192.168.100.70"
     environment:
       - USER=root
       - JAVA_HOME=/opt/run/jdk
@@ -134,6 +137,9 @@ services:
       # HIVE
       - "9083:9083"
       - "10000:10000"
+      # TEZ
+      - "8188:8188"
+      - "9999:9999"
       # HBASE
       - "16000:16000"
       - "16010:16010"
@@ -146,4 +152,35 @@ services:
       # FLINK
       - "6123:6123"
       - "8082:8082"
+
+  presto:
+    build:
+      context: presto
+    container_name: presto
+    hostname: presto
+    depends_on:
+      - hadoop
+    networks:
+      docker:
+        ipv4_address: 192.168.100.70
+    extra_hosts:
+      - "mysql:192.168.100.10"
+      - "zoo:192.168.100.20"
+      - "kafka:192.168.100.30"
+      - "hadoop:192.168.100.60"
+      - "presto:192.168.100.70"
+    ports:
+      - 8180:8080
+
+  redis:
+    image: redis:latest
+    ports:
+      - 6379:6379
+    container_name: redis
+    hostname: redis
+    networks:
+      docker:
+        ipv4_address: 192.168.100.80
+
+  
 

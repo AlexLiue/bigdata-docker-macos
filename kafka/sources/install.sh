@@ -2,8 +2,13 @@
 ## Create by PcLiu at 2022/01/25
 
 ## Create Dir
-mkdir /opt/installs
-mkdir /opt/run
+if [ ! -d "/opt/installs" ] ;then
+  mkdir /opt/installs
+fi
+if [ ! -d "/opt/run" ] ;then
+  mkdir /opt/run
+fi
+
 
 ## Install Java
 if [ ! -d "/opt/run/jdk" ] ;then
@@ -45,6 +50,9 @@ if [ ! -d "/opt/run/debezium" ] ;then
   ln -s /opt/installs/debezium-1.9.4 /opt/run/debezium
 fi
 
+## Install tools
+mv /etc/apt/sources.list /etc/apt/sources.list.back
+cp /opt/sources/sources.list /etc/apt
 apt-get update
 apt-get install -y netcat curl jq net-tools lsof vim mysql-client
 
