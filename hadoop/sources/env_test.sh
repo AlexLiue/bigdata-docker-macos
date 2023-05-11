@@ -54,7 +54,7 @@ EOF
 
 
 /opt/run/spark/bin/spark-shell --master yarn \
-    --packages org.apache.iceberg:iceberg-spark-runtime-3.2_2.12:1.2.0,org.apache.iceberg:iceberg-hive-runtime:1.2.0 <<EOF
+    --packages org.apache.iceberg:iceberg-spark-runtime-3.2_2.12:1.2.1,org.apache.iceberg:iceberg-hive-runtime:1.2.1 <<EOF
 
     spark.stop()
 

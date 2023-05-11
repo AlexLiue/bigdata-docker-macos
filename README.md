@@ -52,21 +52,29 @@ docker system prune --all --volumes
 ### Rebuild 重新编译
 
 ```shell
-
-docker compose stop
-docker rm hadoop
-docker rmi bigdata_hadoop
-docker rm kafka
-docker rmi bigdata_kafka
-docker rm zoo
-docker rm mysql
-docker rmi bigdata_mysql
-
+docker compose stop presto
 docker rm presto
-docker rmi bigdata_presto
+docker compose stop hadoop
+docker rm hadoop
+docker compose stop kafka
+docker rm kafka
+docker compose stop zoo
+docker rm zoo
+docker compose stop mysql
+docker rm mysql
 
-docker rm redis
+
+
+docker compose up -d hadoop
+
+
+
+
+docker rmi bigdata_kafka
+docker rmi bigdata_mysql
 docker rmi bigdata_redis
+docker rmi bigdata_presto
+docker rmi bigdata_hadoop
 
 docker compose up -d
 
@@ -220,3 +228,25 @@ git clone https://github.com/prestodb/presto prestodb
 
 ```
 
+
+
+## 问题说明
+```text
+HDFS  需要 开放 9866 端口,否则会报错
+23/05/09 10:57:31 DEBUG DataStreamer: pipeline = [DatanodeInfoWithStorage[192.168.100.60:9866,DS-a5440298-d121-4b60-af50-ff5c1e028305,DISK]], blk_1073741942_1118
+23/05/09 10:57:31 DEBUG DataStreamer: Connecting to datanode hadoop:9866
+23/05/09 10:57:31 WARN DataStreamer: Exception in createBlockOutputStream blk_1073741942_1118
+java.net.ConnectException: Connection refused
+	at sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
+	at sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:716)
+	at org.apache.hadoop.net.SocketIOWithTimeout.connect(SocketIOWithTimeout.java:206)
+	at org.apache.hadoop.net.NetUtils.connect(NetUtils.java:586)
+	at org.apache.hadoop.hdfs.DataStreamer.createSocketForPipeline(DataStreamer.java:253)
+	at org.apache.hadoop.hdfs.DataStreamer.createBlockOutputStream(DataStreamer.java:1757)
+	at org.apache.hadoop.hdfs.DataStreamer.nextBlockOutputStream(DataStreamer.java:1711)
+	at org.apache.hadoop.hdfs.DataStreamer.run(DataStreamer.java:707)
+org.apache.hadoop.ipc.RemoteException(java.io.IOException): File /user/hdfs/.sparkStaging/application_1683539618806_0010/__spark_conf__.zip could only be written to 0 of the 1 minReplication nodes. There are 1 datanode(s) running and 1 node(s) are excluded in this operation.
+	at org.apache.hadoop.hdfs.server.blockmanagement.BlockManager.chooseTarget4NewBlock(BlockManager.java:2205)
+	at org.apache.hadoop.hdfs.server.namenode.FSDirWriteFileOp.chooseTargetForNewBlock(FSDirWriteFileOp.java:294)
+
+```
