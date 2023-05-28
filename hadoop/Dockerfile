@@ -4,11 +4,11 @@ MAINTAINER "pcliu"
 
 WORKDIR /opt
 ADD sources /opt/sources
-ADD sources/*.sh /opt/
 
-RUN /usr/bin/bash /opt/install.sh 2>&1 | tee /opt/install.log
+HEALTHCHECK CMD /opt/sources/healthcheck.sh
 
-HEALTHCHECK CMD /opt/healthcheck.sh
-ENTRYPOINT ["/usr/bin/bash", "/opt/entrypoint.sh", "|", "tee", "/opt/entrypoint.log" ]
+EXPOSE 2181 2888 3888 8080 8020 50070 50010 50075 50020 8485 8480 9866 8030 8031 8032 8033 8040 8041 8042 8088 10020 19888 9083 10000 8188 9999 16000 16010 16020 16030 9092 8081 8083 8090 4040 18080 6123 8082
+
+ENTRYPOINT ["/usr/bin/bash", "/opt/sources/entrypoint.sh"]
 
 

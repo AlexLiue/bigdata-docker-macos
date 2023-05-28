@@ -9,7 +9,7 @@
     </property>
     <property>
         <name>hbase.zookeeper.quorum</name>
-        <value>zoo</value>
+        <value>hadoop</value>
     </property>
     <property>
         <name>hbase.master.port</name>

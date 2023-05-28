@@ -36,7 +36,7 @@ lrwxrwxrwx 1 root root 26 Feb 17 14:59 flink -> /opt/installs/flink-1.14.3
 
 ### Kafka 环境
 ```shell
-root@kafka:/opt/run# ls -rlt
+root@hadoop:/opt/run# ls -rlt
 total 0
 lrwxrwxrwx 1 root root 31 Feb 17 07:18 jdk8 -> /opt/installs/openjdk-8u312-b07
 lrwxrwxrwx 1 root root 13 Feb 17 07:18 jdk -> /opt/run/jdk8
@@ -52,6 +52,12 @@ docker system prune --all --volumes
 ### Rebuild 重新编译
 
 ```shell
+docker compose stop hadoop
+docker rm hadoop
+docker rmi bigdata-hadoop
+
+
+
 docker compose stop presto
 docker rm presto
 docker compose stop hadoop
@@ -71,10 +77,10 @@ docker compose up -d hadoop
 
 
 docker rmi bigdata_kafka
-docker rmi bigdata_mysql
+docker rmi bigdata-mysql
 docker rmi bigdata_redis
 docker rmi bigdata_presto
-docker rmi bigdata_hadoop
+docker rmi bigdata-hadoop
 
 docker compose up -d
 
@@ -217,7 +223,7 @@ docker rm presto
 docker rmi bigdata_presto
 
 
-presto-cli --server localhost:8080 --catalog hive --schema test
+presto-cli --server hadoop:8080 --catalog hive --schema test
 
 
 git clone https://github.com/prestodb/presto prestodb
@@ -233,7 +239,7 @@ git clone https://github.com/prestodb/presto prestodb
 ## 问题说明
 ```text
 HDFS  需要 开放 9866 端口,否则会报错
-23/05/09 10:57:31 DEBUG DataStreamer: pipeline = [DatanodeInfoWithStorage[192.168.100.60:9866,DS-a5440298-d121-4b60-af50-ff5c1e028305,DISK]], blk_1073741942_1118
+23/05/09 10:57:31 DEBUG DataStreamer: pipeline = [DatanodeInfoWithStorage[hadoop:9866,DS-a5440298-d121-4b60-af50-ff5c1e028305,DISK]], blk_1073741942_1118
 23/05/09 10:57:31 DEBUG DataStreamer: Connecting to datanode hadoop:9866
 23/05/09 10:57:31 WARN DataStreamer: Exception in createBlockOutputStream blk_1073741942_1118
 java.net.ConnectException: Connection refused

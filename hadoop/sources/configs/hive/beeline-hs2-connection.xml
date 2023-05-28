@@ -7,7 +7,7 @@
     </property>
     <property>
         <name>beeline.hs2.connection.password</name>
-        <value>hive</value>
+        <value>hive_password</value>
     </property>
 
     <property>
