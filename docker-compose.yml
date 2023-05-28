@@ -37,6 +37,8 @@ services:
     ports:
       # SSH
       - "1022:22"
+      # MYSQL
+      - "3306:3306"
       # Zookeeper
       - "2181:2181"
       - "2888:2888"
