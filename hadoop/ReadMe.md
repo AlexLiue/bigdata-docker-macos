@@ -1,0 +1,95 @@
+
+## docker compose start [docker-compose.yml]
+
+```shell
+networks:
+  docker:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.100.0/24
+          gateway: 192.168.100.1
+
+services:
+
+  hadoop:
+    build:
+      context: hadoop
+    container_name: hadoop
+    hostname: hadoop
+    networks:
+      docker:
+        ipv4_address: 192.168.100.10
+    extra_hosts:
+      - "doris:192.168.100.20"
+      - "trino:192.168.100.21"
+      - "redis:192.168.100.30"
+    environment:
+      - USER=root
+      - JAVA_HOME=/opt/run/jdk
+      - ZOOKEEPER_HOME=/opt/run/zookeeper
+      - HADOOP_HOME=/opt/run/hadoop
+      - HADOOP_CONF_DIR=/opt/run/hadoop/etc/hadoop
+      - HBASE_HOME=/opt/run/hbase
+      - HIVE_HOME=/opt/run/hive
+      - SPARK2_HOME=/opt/run/spark
+      - SPARK3_HOME=/opt/run/spark3
+      - SPARK_MASTER_WEBUI_PORT=8090
+      - FLINK_HOME=/opt/run/flink
+      - PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/run/jdk/bin:/opt/run/zookeeper/bin:/opt/run/hadoop/bin:/opt/run/hbase/bin:/opt/run/hive/bin:/opt/run/kafka/bin
+    ports:
+      # SSH
+      - "1022:22"
+      # Zookeeper
+      - "2181:2181"
+      - "2888:2888"
+      - "3888:3888"
+      - "8080:8080"
+      # HDFS
+      - "8020:8020"
+      - "50070:50070"
+      - "50010:50010"
+      - "50075:50075"
+      - "50475:50475"
+      - "50020:50020"
+      - "8485:8485"
+      - "8480:8480"
+      - "9866:9866"
+      # YARN
+      - "8030:8030"
+      - "8031:8031"
+      - "8032:8032"
+      - "8033:8033"
+      - "8040:8040"
+      - "8042:8042"
+      - "8041:8041"
+      - "8088:8088"
+      - "10020:10020"
+      - "19888:19888"
+      # HIVE
+      - "9083:9083"
+      - "10000:10000"
+      # TEZ
+      - "8188:8188"
+      - "9999:9999"
+      # HBASE
+      - "16000:16000"
+      - "16010:16010"
+      - "16020:16020"
+      - "16030:16030"
+      # KAFKA BOOTSTRAP
+      - "9092:9092"
+      # CONFLUENT SCHEMA REGISTRY
+      - "8081:8081"
+      # KAFKA AVRO CONNECTOR
+      - "8083:8083"
+      # SPARK
+      - "8090:8090"
+      - "4040:4040"
+      - "18080:18080"
+      # FLINK
+      - "6123:6123"
+      - "8082:8082"
+
+```
