@@ -25,8 +25,12 @@ wait_for() {
 }
 
 chmod 755 /opt/sources/*.sh
-mv /etc/apt/sources.list /etc/apt/sources.list.back
-cp /opt/sources/sources.list /etc/apt
+
+if [ "$USE_CHINA_TUNA_MIRRORS" == "true" ] ;then
+  mv /etc/apt/sources.list /etc/apt/sources.list.back
+  cp /opt/sources/sources.list /etc/apt
+fi
+
 
 ## Prepare System Env
 if [ ! -f  "/usr/bin/vim" ] ;then

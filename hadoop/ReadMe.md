@@ -41,6 +41,8 @@ services:
     ports:
       # SSH
       - "1022:22"
+      # MYSQL
+      - "3306:3306"
       # Zookeeper
       - "2181:2181"
       - "2888:2888"
@@ -92,4 +94,21 @@ services:
       - "6123:6123"
       - "8082:8082"
 
+
+  redis:
+    image: redis:latest
+    ports:
+      - 6379:6379
+    container_name: redis
+    hostname: redis
+    networks:
+      docker:
+        ipv4_address: 192.168.100.30
+    extra_hosts:
+      - "hadoop:192.168.100.10"
+      - "doris:192.168.100.20"
+      - "trino:192.168.100.21"
+
+
+ 
 ```

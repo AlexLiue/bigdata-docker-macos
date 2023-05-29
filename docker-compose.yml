@@ -34,6 +34,7 @@ services:
       - SPARK_MASTER_WEBUI_PORT=8090
       - FLINK_HOME=/opt/run/flink
       - PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/run/jdk/bin:/opt/run/zookeeper/bin:/opt/run/hadoop/bin:/opt/run/hbase/bin:/opt/run/hive/bin:/opt/run/kafka/bin
+      - USE_CHINA_TUNA_MIRRORS=true
     ports:
       # SSH
       - "1022:22"

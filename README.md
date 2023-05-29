@@ -13,10 +13,10 @@ CONTAINER ID   IMAGE             COMMAND                  CREATED         STATUS
 dbee109f50b6   zookeeper:3.5.9   "/docker-entrypoint.…"   2 minutes ago   Up 2 minutes             0.0.0.0:2181->2181/tcp, 0.0.0.0:2888->2888/tcp, 0.0.0.0:3888->3888/tcp, 0.0.0.0:8080->8080/tcp                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       zoo
 ```
 ### 环境IP地址总汇
-- `mysql`: 192.168.100.10  
-- `zoo`: 192.168.100.20
-- `kafka`: 192.168.100.30  
-- `hadoop`: 192.168.100.60
+      - "hadoop:192.168.100.10"
+      - "doris:192.168.100.20"
+      - "trino:192.168.100.21"
+      - "redis:192.168.100.30"
 
 ### Hadoop 环境
 ```shell
@@ -86,8 +86,6 @@ docker compose up -d
 
 ```
 
-
-
 create table tbl_test(id int, name string);
 insert into tbl_test(id,name) values(1,'a');
 insert into tbl_test(id,name) values(2,'b');
@@ -96,67 +94,6 @@ select * from default.tbl_test;
 select sum(id) from default.tbl_test;
 
 
-### 目录结构 
-```text
-bigdata
-├── README.md
-├── bigdata-docker.iml
-├── docker-compose.yml
-├── hadoop
-│   ├── Dockerfile
-│   └── sources
-│       ├── configs
-│       │   ├── hadoop
-│       │   │   ├── core-site.xml
-│       │   │   ├── hdfs-site.xml
-│       │   │   └── yarn-site.xml
-│       │   ├── hbase
-│       │   │   └── hbase-site.xml
-│       │   └── hive
-│       │       ├── hive-env.sh
-│       │       └── hive-site.xml
-│       ├── entrypoint.sh
-│       ├── healthcheck.sh
-│       ├── install.sh
-│       └── packages
-│           ├── OpenJDK11U-jdk_aarch64_linux_11.0.13_8.tar.gz
-│           ├── OpenJDK8U-jdk_aarch64_linux_8u312b07.tar.gz
-│           ├── apache-hive-3.1.1-bin.tar.gz
-│           ├── flink-1.14.3-bin-scala_2.11.tgz
-│           ├── hadoop-2.7.5.tar.gz
-│           ├── hbase-1.4.9-bin.tar.gz
-│           ├── libs
-│           │   └── mysql-connector-java-8.0.28.jar
-│           ├── spark-2.4.8-bin-hadoop2.7.tgz
-│           └── spark-3.1.2-bin-hadoop2.7.tgz
-├── kafka
-│   ├── Dockerfile
-│   └── sources
-│       ├── config
-│       │   ├── connect-avro-distributed.properties
-│       │   ├── connect-instances
-│       │   │   ├── db_gb18030_test.json
-│       │   │   ├── db_gbk_test.json
-│       │   │   └── db_utf8_test.json
-│       │   ├── connect-json-distributed.properties
-│       │   └── server.properties
-│       ├── entrypoint.sh
-│       ├── example
-│       │   ├── create_test_table.sh
-│       │   └── example.sh
-│       ├── healthcheck.sh
-│       ├── install.sh
-│       └── packages
-│           ├── OpenJDK8U-jdk_aarch64_linux_8u312b07.tar.gz
-│           ├── confluent-community-7.0.1.tar.gz
-│           ├── debezium-connector-mysql-1.8.0.Final-plugin.tar.gz
-│           └── kafka_2.12-2.6.3.tgz
-└── mysql
-    ├── Dockerfile
-    └── sources
-        └── config
-            └── my.cnf
-```
 ###  进入容器
 ```shell
 docker exec -it bigdata bash 
