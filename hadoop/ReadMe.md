@@ -1,5 +1,11 @@
+# BigData Docker Env For MacOS M1
+[BigData Run Env](https://github.com/AlexLiue/bigdata-docker-macos)  (Hadoop, Spark, Hive, Flink, Kafka, Zookeeper, Debezium, Mysql), MacOS M1 环境.
 
-## docker compose start [docker-compose.yml]
+GitHub TAG LIST   
+[3.1.3-0.1](https://github.com/AlexLiue/bigdata-docker-macos/releases/tag/3.1.3-0.1)
+
+
+## Step1. Create  Docker Compose File ` docker-compose.yml`.
 
 ```shell
 networks:
@@ -10,12 +16,9 @@ networks:
       config:
         - subnet: 192.168.100.0/24
           gateway: 192.168.100.1
-
 services:
-
   hadoop:
-    build:
-      context: hadoop
+    image: alexliuee/hadoop-aarch64:last
     container_name: hadoop
     hostname: hadoop
     networks:
@@ -93,22 +96,45 @@ services:
       # FLINK
       - "6123:6123"
       - "8082:8082"
+```
+## Step2. Launch Docker Compose
+```
+docker compose up
+```
 
+## Step3. Check  Run Status
 
-  redis:
-    image: redis:latest
-    ports:
-      - 6379:6379
-    container_name: redis
-    hostname: redis
-    networks:
-      docker:
-        ipv4_address: 192.168.100.30
-    extra_hosts:
-      - "hadoop:192.168.100.10"
-      - "doris:192.168.100.20"
-      - "trino:192.168.100.21"
+```
+# docker ps
+CONTAINER ID   IMAGE            COMMAND                   CREATED          STATUS                            PORTS                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    NAMES
+c142ce36241f   bigdata-hadoop   "/usr/bin/bash /opt/…"   About an hour ago   Up 12 minutes (healthy)   0.0.0.0:2181->2181/tcp, 0.0.0.0:2888->2888/tcp, 0.0.0.0:3888->3888/tcp, 0.0.0.0:4040->4040/tcp, 0.0.0.0:6123->6123/tcp, 0.0.0.0:8020->8020/tcp, 0.0.0.0:8030-8033->8030-8033/tcp, 0.0.0.0:8040-8042->8040-8042/tcp, 0.0.0.0:8080-8083->8080-8083/tcp, 0.0.0.0:8088->8088/tcp, 0.0.0.0:8090->8090/tcp, 0.0.0.0:8188->8188/tcp, 0.0.0.0:8480->8480/tcp, 0.0.0.0:8485->8485/tcp, 0.0.0.0:9083->9083/tcp, 0.0.0.0:9092->9092/tcp, 0.0.0.0:9866->9866/tcp, 0.0.0.0:9999-10000->9999-10000/tcp, 0.0.0.0:10020->10020/tcp, 0.0.0.0:16000->16000/tcp, 0.0.0.0:16010->16010/tcp, 0.0.0.0:16020->16020/tcp, 0.0.0.0:16030->16030/tcp, 0.0.0.0:18080->18080/tcp, 0.0.0.0:19888->19888/tcp, 0.0.0.0:50010->50010/tcp, 0.0.0.0:50020->50020/tcp, 0.0.0.0:50070->50070/tcp, 0.0.0.0:50075->50075/tcp, 0.0.0.0:50475->50475/tcp, 0.0.0.0:1022->22/tcp   hadoop
+```
 
+## Step4. Add IP Host Route , Edit `/etc/hosts`
+```shell
+192.168.100.10 hadoop
+```
 
- 
+## Container Compose List
+```
+root@hadoop:/opt/run# ls -lrt /opt/run/
+total 0
+lrwxrwxrwx 1 root  root   23 May 28 16:19 jdk8 -> /opt/installs/jdk-8u312
+lrwxrwxrwx 1 root  root   25 May 28 16:19 jdk11 -> /opt/installs/jdk-11.0.13
+lrwxrwxrwx 1 root  root   13 May 28 16:19 jdk -> /opt/run/jdk8
+lrwxrwxrwx 1 root  root   36 May 28 16:19 zookeeper -> /opt/installs/apache-zookeeper-3.7.1
+lrwxrwxrwx 1 root  root   26 May 28 16:19 mysql -> /opt/installs/mysql-8.0.33
+lrwxrwxrwx 1 root  root   25 May 28 16:20 scala -> /opt/installs/scala-3.2.2
+lrwxrwxrwx 1 root  root   26 May 28 16:20 hadoop -> /opt/installs/hadoop-3.1.3
+lrwxrwxrwx 1 hdfs  hadoop 34 May 28 16:20 tomcat -> /opt/installs/apache-tomcat-9.0.74
+lrwxrwxrwx 1 hdfs  hadoop 24 May 28 16:20 tez -> /opt/installs/tez-0.10.1
+lrwxrwxrwx 1 hdfs  hadoop 24 May 28 16:20 hive -> /opt/installs/hive-3.1.3
+lrwxrwxrwx 1 hbase hadoop 25 May 28 16:20 hbase -> /opt/installs/hbase-1.4.9
+lrwxrwxrwx 1 root  root   44 May 28 16:20 spark2 -> /opt/installs/spark-2.4.8-bin-without-hadoop
+lrwxrwxrwx 1 root  root   39 May 28 16:20 spark3 -> /opt/installs/spark-3.2.4-bin-hadoop3.2
+lrwxrwxrwx 1 spark hadoop 15 May 28 16:20 spark -> /opt/run/spark3
+lrwxrwxrwx 1 flink hadoop 26 May 28 16:20 flink -> /opt/installs/flink-1.17.0
+lrwxrwxrwx 1 root  root   30 May 28 16:20 kafka -> /opt/installs/kafka_2.12-2.6.3
+lrwxrwxrwx 1 root  root   29 May 28 16:20 confluent -> /opt/installs/confluent-7.0.1
+lrwxrwxrwx 1 root  root   28 May 28 16:20 debezium -> /opt/installs/debezium-1.9.4
 ```
