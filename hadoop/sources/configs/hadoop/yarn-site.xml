@@ -18,7 +18,7 @@
 
     <property>
         <name>yarn.resourcemanager.hostname</name>
-        <value>localhost</value>
+        <value>hadoop</value>
     </property>
     <property>
         <name>yarn.resourcemanager.scheduler.class</name>
@@ -67,7 +67,7 @@
     </property>
     <property>
         <name>yarn.log.server.url</name>
-        <value>http://localhost:19888/jobhistory/logs</value>
+        <value>http://hadoop:19888/jobhistory/logs</value>
     </property>
     <property>
         <name>yarn.timeline-service.enabled</name>
@@ -75,19 +75,19 @@
     </property>
     <property>
         <name>yarn.timeline-service.hostname</name>
-        <value>localhost</value>
+        <value>hadoop</value>
     </property>
     <property>
         <name>yarn.timeline-service.address</name>
-        <value>localhost:10200</value>
+        <value>hadoop:10200</value>
     </property>
     <property>
         <name>yarn.timeline-service.webapp.address</name>
-        <value>localhost:8188</value>
+        <value>hadoop:8188</value>
     </property>
     <property>
         <name>yarn.timeline-service.webapp.https.address</name>
-        <value>localhost:8190</value>
+        <value>hadoop:8190</value>
     </property>
     <property>
         <name>yarn.timeline-service.http-cross-origin.enabled</name>

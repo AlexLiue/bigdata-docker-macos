@@ -109,7 +109,7 @@ if [ ! -f  "/opt/run/mysql" ] ;then
   wait_for hadoop 3306 "mysql"
   sleep 10
   mysql -uroot --skip-password <<EOF
-    UPDATE mysql.user set host='%' where host='localhost' and  user ='root';
+    UPDATE mysql.user set host='%' where host='hadoop' and  user ='root';
     FLUSH PRIVILEGES;
     ALTER USER 'root'@'%' IDENTIFIED  WITH mysql_native_password BY  'root_password';
     CREATE USER 'hive'@'%' IDENTIFIED BY 'hive_password';
@@ -137,6 +137,7 @@ if [ ! -d "/opt/run/hadoop" ] ;then
     rm -f "/opt/sources/packages/hadoop-$VERSION.tar.gz"
     ln -s "/opt/installs/hadoop-$VERSION"  /opt/run/hadoop
     cp -f /opt/sources/configs/hadoop/* /opt/run/hadoop/etc/hadoop
+    echo "hadoop" >/opt/run/hadoop/etc/hadoop/workers
     # Fix snappy-java
     rm -f /opt/run/hadoop/share/hadoop/common/lib/snappy-java*
     cp /opt/sources/packages/libs/snappy-java-1.1.8.4.jar /opt/run/hadoop/share/hadoop/common/lib/
@@ -240,11 +241,10 @@ if [ ! -d "/opt/run/tez" ] ;then
     rm -f "tez-ui-$VERSION.war"
 
     sed -i 's+8080+9999+g' /opt/run/tomcat/conf/server.xml
-    sed -i 's+//timeline: "http://localhost:8188"+timeline: "http://localhost:8188"+g' /opt/run/tomcat/webapps/tez-ui/config/configs.js
-    sed -i 's+//rm: "http://localhost:8088"+rm: "http://localhost:8088"+g' /opt/run/tomcat/webapps/tez-ui/config/configs.js
+    sed -i 's+//timeline: "http://localhost:8188"+timeline: "http://hadoop:8188"+g' /opt/run/tomcat/webapps/tez-ui/config/configs.js
+    sed -i 's+//rm: "http://localhost:8088"+rm: "http://hadoop:8088"+g' /opt/run/tomcat/webapps/tez-ui/config/configs.js
 
     chown -R hdfs:hadoop /opt/run/tomcat
-
     chown -R hdfs:hadoop "/opt/installs/tez-$VERSION"
     chown -R hdfs:hadoop /opt/run/tez
 fi
@@ -299,7 +299,7 @@ if [ ! -d "/opt/run/hbase" ] ;then
     sed -i "/$HBASE_JAVA_HOME_ORG/a $HBASE_JAVA_HOME_SET" /opt/run/hbase/conf/hbase-env.sh
     sed -i 's/# export HBASE_MANAGES_ZK=true/export HBASE_MANAGES_ZK=false/' /opt/run/hbase/conf/hbase-env.sh
     cp -f /opt/sources/configs/hbase/hbase-site.xml /opt/run/hbase/conf
-    echo "localhost" > /opt/run/hbase/conf/regionservers
+    echo "hadoop" > /opt/run/hbase/conf/regionservers
 
     rm -f /opt/run/hbase/lib/leveldbjni-all-1.8.jar
     cp /opt/sources/packages/libs/leveldbjni-all-1.8.jar /opt/run/hbase/lib/
@@ -322,10 +322,14 @@ if [ ! -d "/opt/run/spark" ] ;then
     tar -zxf "/opt/sources/packages/spark-$SPARK2_VERSION-bin-without-hadoop.tgz" -C "/opt/installs"
     rm -f "/opt/sources/packages/spark-$SPARK2_VERSION-bin-without-hadoop.tgz"
     ln -s "/opt/installs/spark-$SPARK2_VERSION-bin-without-hadoop" /opt/run/spark2
+    mv /opt/run/spark2/conf/workers.template /opt/run/spark2/conf/workers
+    echo "hadoop" > /opt/run/spark2/conf/workers
+
     tar -zxf "/opt/sources/packages/spark-$SPARK3_VERSION-bin-hadoop3.2.tgz" -C "/opt/installs"
     rm -f "/opt/sources/packages/spark-$SPARK3_VERSION-bin-hadoop3.2.tgz"
-    ln -s "/opt/installs/spark-$SPARK2_VERSION-bin-without-hadoop" /opt/run/spark2
     ln -s "/opt/installs/spark-$SPARK3_VERSION-bin-hadoop3.2" /opt/run/spark3
+   mv /opt/run/spark3/conf/workers.template /opt/run/spark3/conf/workers
+    echo "hadoop" > /opt/run/spark3/conf/workers
 
     rm -f /opt/run/spark2/jars/snappy-java*
     cp /opt/sources/packages/libs/snappy-java-1.1.8.4.jar /opt/run/spark2/jars/
@@ -391,6 +395,7 @@ if [ ! -d "/opt/run/kafka" ] ;then
   rm -f /opt/sources/packages/kafka_2.12-2.6.3.tgz
   ln -s /opt/installs/kafka_2.12-2.6.3 /opt/run/kafka
   cp -rf /opt/sources/configs/kafka/config/* /opt/run/kafka/config
+  find /opt/run/kafka/config -type f -print0  | xargs -0 -I {} sed -i 's/localhost/hadoop/g' {}
 
   echo "" >>/etc/profile
   echo "export KAFKA_HOME=/opt/run/kafka" >> /etc/profile
@@ -402,6 +407,7 @@ if [ ! -d "/opt/run/confluent" ] ;then
     tar -zxf /opt/sources/packages/confluent-community-7.0.1.tar.gz -C /opt/installs
     rm -f /opt/sources/packages/confluent-community-7.0.1.tar.gz
     ln -s /opt/installs/confluent-7.0.1 /opt/run/confluent
+    find /opt/run/confluent/etc  -type f -print0  | xargs -0 -I {} sed -i 's/localhost/hadoop/g' {}
 fi
 
 ## Install Kafka Connector Plugins: Debezium
