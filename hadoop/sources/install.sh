@@ -109,7 +109,7 @@ if [ ! -f  "/opt/run/mysql" ] ;then
   wait_for hadoop 3306 "mysql"
   sleep 10
   mysql -uroot --skip-password <<EOF
-    UPDATE mysql.user set host='%' where host='hadoop' and  user ='root';
+    UPDATE mysql.user set host='%' where host='localhost' and  user ='root';
     FLUSH PRIVILEGES;
     ALTER USER 'root'@'%' IDENTIFIED  WITH mysql_native_password BY  'root_password';
     CREATE USER 'hive'@'%' IDENTIFIED BY 'hive_password';
@@ -185,7 +185,7 @@ if [ ! -d "/opt/run/hadoop" ] ;then
 
     # Create Logs  Dir
     mkdir /opt/run/hadoop/logs
-    chown  hdfs:hadoop /opt/run/hadoop/logs
+    chown hdfs:hadoop /opt/run/hadoop/logs
     chmod 775 -R /opt/run/hadoop/logs
 
     ## Format
