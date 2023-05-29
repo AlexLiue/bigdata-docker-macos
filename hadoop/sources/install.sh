@@ -419,5 +419,3 @@ rm -rf /opt/sources/packages
 rm -rf /opt/sources/configs
 rm -rf /opt/sources/sources.list
 
-# TEST ENV
-bash /opt/sources/env_test.sh
