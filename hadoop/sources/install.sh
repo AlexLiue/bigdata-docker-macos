@@ -199,6 +199,7 @@ if [ ! -d "/opt/run/tomcat" ] ;then
     rm -f "/opt/sources/packages/apache-tomcat-$VERSION.tar.gz"
     ln -s "/opt/installs/apache-tomcat-$VERSION" /opt/run/tomcat
     sed -i 's/8080/9999/g' /opt/run/tomcat/conf/server.xml
+    sed -i 's/localhost/hadoop/g' /opt/run/tomcat/conf/server.xml
     chmod 755 -R /opt/run/tomcat/bin/*.sh
     chown -R hdfs:hadoop "/opt/installs/apache-tomcat-$VERSION"
     chown -R hdfs:hadoop /opt/run/tomcat
