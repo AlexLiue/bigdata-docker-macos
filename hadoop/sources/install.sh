@@ -299,7 +299,7 @@ if [ ! -d "/opt/run/hbase" ] ;then
     sed -i "/$HBASE_JAVA_HOME_ORG/a $HBASE_JAVA_HOME_SET" /opt/run/hbase/conf/hbase-env.sh
     sed -i 's/# export HBASE_MANAGES_ZK=true/export HBASE_MANAGES_ZK=false/' /opt/run/hbase/conf/hbase-env.sh
     cp -f /opt/sources/configs/hbase/hbase-site.xml /opt/run/hbase/conf
-    echo "hadoop" > /opt/run/hbase/conf/regionservers
+    echo "localhost" > /opt/run/hbase/conf/regionservers
 
     rm -f /opt/run/hbase/lib/leveldbjni-all-1.8.jar
     cp /opt/sources/packages/libs/leveldbjni-all-1.8.jar /opt/run/hbase/lib/
@@ -402,9 +402,7 @@ if [ ! -d "/opt/run/confluent" ] ;then
     tar -zxf /opt/sources/packages/confluent-community-7.0.1.tar.gz -C /opt/installs
     rm -f /opt/sources/packages/confluent-community-7.0.1.tar.gz
     ln -s /opt/installs/confluent-7.0.1 /opt/run/confluent
-    sed -i "s/0.0.0.0:8081/localhost:8081/" /opt/run/confluent/etc/schema-registry/schema-registry.properties
 fi
-
 
 ## Install Kafka Connector Plugins: Debezium
 if [ ! -d "/opt/run/debezium" ] ;then
