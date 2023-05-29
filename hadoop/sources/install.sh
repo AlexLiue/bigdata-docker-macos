@@ -74,8 +74,8 @@ if [ ! -f  "/opt/run/jdk/bin/java" ] ;then
     echo "export PATH=\"\$PATH:/opt/run/jdk/bin\"" >> /etc/profile
     export JAVA_HOME=/opt/run/jdk
 
-    chown -R  root:root /opt/run/jdk
-    chown -R  root:root /opt/installs/jdk-*
+    chown -R root:root /opt/run/jdk
+    chown -R root:root /opt/installs/jdk-*
 fi
 
 
@@ -240,8 +240,8 @@ if [ ! -d "/opt/run/tez" ] ;then
     rm -f "tez-ui-$VERSION.war"
 
     sed -i 's+8080+9999+g' /opt/run/tomcat/conf/server.xml
-    sed -i 's+//timeline: "http://localhost:8188"+timeline: "http://hadoop:8188"+g' /opt/run/tomcat/webapps/tez-ui/config/configs.js
-    sed -i 's+//rm: "http://localhost:8088"+rm: "http://hadoop:8088"+g' /opt/run/tomcat/webapps/tez-ui/config/configs.js
+    sed -i 's+//timeline: "http://localhost:8188"+timeline: "http://localhost:8188"+g' /opt/run/tomcat/webapps/tez-ui/config/configs.js
+    sed -i 's+//rm: "http://localhost:8088"+rm: "http://localhost:8088"+g' /opt/run/tomcat/webapps/tez-ui/config/configs.js
 
     chown -R hdfs:hadoop /opt/run/tomcat
 
@@ -402,8 +402,7 @@ if [ ! -d "/opt/run/confluent" ] ;then
     tar -zxf /opt/sources/packages/confluent-community-7.0.1.tar.gz -C /opt/installs
     rm -f /opt/sources/packages/confluent-community-7.0.1.tar.gz
     ln -s /opt/installs/confluent-7.0.1 /opt/run/confluent
-    sed -i "s/0.0.0.0:8081/hadoop:8081/" /opt/run/confluent/etc/schema-registry/schema-registry.properties
-    sed -i "s/localhost:9092/hadoop:9092/" /opt/run/confluent/etc/schema-registry/schema-registry.properties
+    sed -i "s/0.0.0.0:8081/localhost:8081/" /opt/run/confluent/etc/schema-registry/schema-registry.properties
 fi
 
 

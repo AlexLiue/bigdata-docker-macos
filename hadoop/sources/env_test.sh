@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ## Test Hive ENV
-/opt/run/hive/bin/beeline -u jdbc:hive2://hadoop:10000/default -nhive -phive_password -e"
+/opt/run/hive/bin/beeline -u jdbc:hive2://localhost:10000/default -nhive -phive_password -e"
 create database test;
 use test;
 create table test.tbl_test(id int, name string, score int);

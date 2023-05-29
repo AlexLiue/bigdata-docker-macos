@@ -15,7 +15,7 @@ fi
 
 
 #####################################################################################################
-#                                 HADOOP  HBASE HIVE SPARK  FLINK                                   #
+#                                 localhost  HBASE HIVE SPARK  FLINK                                   #
 #####################################################################################################
 wait_for() {
   echo "Waiting $3" started, waiting for "$1" to listen on "$2"...
@@ -29,7 +29,7 @@ rm -rf /opt/run/hbase/logs/*
 
 ## Start SSH Server
 service ssh start
-wait_for hadoop 22
+wait_for localhost 22
 
 ## Source Env
 sh /etc/profile
@@ -37,22 +37,22 @@ sh /etc/profile
 ## Wait for Dependencies Started
 if ! nc -z localhost 3306  ;then
    /opt/run/mysql/bin/mysqld_safe --user=mysql &
-   wait_for hadoop 3306 "mysql"
+   wait_for localhost 3306 "mysql"
 fi
 
 ## Zookeeper
 /opt/run/zookeeper/bin/zkServer.sh --config /opt/run/zookeeper/conf restart
-wait_for hadoop 2181 "zookeeper"
+wait_for localhost 2181 "zookeeper"
 
 
-## Start Hadoop HDFS
+## Start localhost HDFS
 su -c "/opt/run/hadoop/sbin/start-dfs.sh" hdfs
-wait_for hadoop 8020 "hadoop-hdfs"
-wait_for hadoop 50070 "hadoop-hdfs"
+wait_for localhost 8020 "hadoop-hdfs"
+wait_for localhost 50070 "hadoop-hdfs"
 
 ## Start YARN
 su -c "/opt/run/hadoop/sbin/start-yarn.sh" yarn
-wait_for hadoop 8088 "hadoop-yarn"
+wait_for localhost 8088 "hadoop-yarn"
 
 ## Start Job history
 dir_created=$(/opt/run/hadoop/bin/hdfs dfs -ls / | grep -c tmp)
@@ -87,26 +87,26 @@ if [ "$dir_created" == "0" ] ;then
 fi
 
 su -c "nohup /opt/run/hadoop/bin/mapred historyserver 2>&1 > /opt/run/hadoop/logs/hadoop-historyserver.log &" yarn
-wait_for hadoop 19888 "hadoop-history-server"
+wait_for localhost 19888 "hadoop-history-server"
 
 ## Start Yarn TimelineServer
 su -c "/opt/run/hadoop/bin/yarn --daemon start  timelineserver" yarn
-wait_for hadoop 8188 "hadoop-yarn-timelineserver"
+wait_for localhost 8188 "hadoop-yarn-timelineserver"
 
 ## Start hive metastore
 su -c "nohup /opt/run/hive/bin/hive --service metastore 2>&1 > /opt/run/hive/logs/hive-metastore.log &" hdfs
-wait_for hadoop 9083 "hive-metastore"
+wait_for localhost 9083 "hive-metastore"
 
 ## Start hive hiveserver2
 su -c "nohup /opt/run/hive/bin/hive --service hiveserver2 2>&1 > /opt/run/hive/logs/hive-hiveserver2.log &" hdfs
-wait_for hadoop 10000 "hive-server2"
+wait_for localhost 10000 "hive-server2"
 
 ## Start hive TEZ UI
 su -c "nohup /opt/run/tomcat/bin/startup.sh 2>&1 >/opt/run/tomcat/bin/startup.log &" hdfs
 
 ## Start hive hbase
 su -c "/opt/run/hbase/bin/start-hbase.sh" hbase
-wait_for hadoop 16000 "hbase"
+wait_for localhost 16000 "hbase"
 
 #####################################################################################################
 #                             Kafka  Confluent Schema Registry Server                               #
@@ -117,18 +117,18 @@ rm -rf /opt/run/confluent/logs/*
 
 ## Start Kafka
 /opt/run/kafka/bin/kafka-server-start.sh -daemon /opt/run/kafka/config/server.properties
-wait_for "hadoop" "9092" " kafka-server"
+wait_for localhost 9092 " kafka-server"
 
 /opt/run/confluent/bin/schema-registry-start -daemon /opt/run/confluent/etc/schema-registry/schema-registry.properties
-wait_for "hadoop" "8081" "schema-registry"
+wait_for localhost 8081 "schema-registry"
 
 /opt/run/kafka/bin/connect-distributed.sh -daemon /opt/run/kafka/config/connect-avro-distributed.properties
-wait_for "hadoop" "8083" "connect-distributed-avro"
+wait_for localhost 8083 "connect-distributed-avro"
 
 /opt/run/kafka/bin/connect-distributed.sh -daemon /opt/run/kafka/config/connect-json-distributed.properties
-wait_for "hadoop" "8084" "connect-distributed-json"
+wait_for localhost 8084 "connect-distributed-json"
 
-curl -XGET http://hadoop:8083/connector-plugins
+curl -XGET http://localhost:8083/connector-plugins
 
 
 
