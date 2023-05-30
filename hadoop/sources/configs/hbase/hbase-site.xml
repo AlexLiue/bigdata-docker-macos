@@ -1,7 +1,7 @@
 <configuration>
     <property>
         <name>hbase.rootdir</name>
-        <value>hdfs://hadoop:8020/hbase</value>
+        <value>hdfs://0.0.0.0:8020/hbase</value>
     </property>
     <property>
         <name>hbase.cluster.distributed</name>
@@ -9,7 +9,7 @@
     </property>
     <property>
         <name>hbase.zookeeper.quorum</name>
-        <value>hadoop</value>
+        <value>0.0.0.0</value>
     </property>
     <property>
         <name>hbase.zookeeper.property.clientPort</name>
@@ -25,7 +25,7 @@
     </property>
     <property>
         <name>hbase.master.info.bindAddress</name>
-        <value>hadoop</value>
+        <value>0.0.0.0</value>
     </property>
     <property>
         <name>hbase.regionserver.port</name>
@@ -41,6 +41,6 @@
     </property>
     <property>
         <name>hbase.regionserver.info.bindAddress</name>
-        <value>hadoop</value>
+        <value>0.0.0.0</value>
     </property>
 </configuration>

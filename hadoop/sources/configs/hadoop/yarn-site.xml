@@ -18,12 +18,26 @@
 
     <property>
         <name>yarn.resourcemanager.hostname</name>
-        <value>hadoop</value>
+        <value>0.0.0.0</value>
     </property>
     <property>
         <name>yarn.resourcemanager.scheduler.class</name>
         <value>org.apache.hadoop.yarn.server.resourcemanager.scheduler.fair.FairScheduler</value>
     </property>
+
+    <property>
+        <name>yarn.nodemanager.hostname</name>
+        <value>0.0.0.0</value>
+    </property>
+    <property>
+        <name>yarn.nodemanager.bind-host</name>
+        <value>0.0.0.0</value>
+    </property>
+    <property>
+        <name>yarn.nodemanager.webapp.address</name>
+        <value>0.0.0.0:8042</value>
+    </property>
+
     <property>
         <name>yarn.nodemanager.aux-services</name>
         <value>mapreduce_shuffle</value>
@@ -36,6 +50,15 @@
         <name>yarn.nodemanager.resource.cpu-vcores</name>
         <value>8</value>
     </property>
+    <property>
+        <name>yarn.nodemanager.vmem-check-enabled</name>
+        <value>false</value>
+    </property>
+    <property>
+        <name>yarn.nodemanager.vmem-pmem-ratio</name>
+        <value>5</value>
+    </property>
+
 
     <property>
         <name>yarn.scheduler.minimum-allocation-mb</name>
@@ -49,14 +72,7 @@
         <name>yarn.scheduler.cap acity.maximum-am-resource-percent</name>
         <value>0.5</value>
     </property>
-    <property>
-        <name>yarn.nodemanager.vmem-check-enabled</name>
-        <value>false</value>
-    </property>
-    <property>
-        <name>yarn.nodemanager.vmem-pmem-ratio</name>
-        <value>5</value>
-    </property>
+
     <property>
         <name>yarn.log-aggregation-enable</name>
         <value>true</value>
@@ -67,27 +83,28 @@
     </property>
     <property>
         <name>yarn.log.server.url</name>
-        <value>http://hadoop:19888/jobhistory/logs</value>
+        <value>http://localhost:19888/jobhistory/logs</value>
     </property>
+
     <property>
         <name>yarn.timeline-service.enabled</name>
         <value>true</value>
     </property>
     <property>
         <name>yarn.timeline-service.hostname</name>
-        <value>hadoop</value>
+        <value>0.0.0.0</value>
     </property>
     <property>
         <name>yarn.timeline-service.address</name>
-        <value>hadoop:10200</value>
+        <value>0.0.0.0:10200</value>
     </property>
     <property>
         <name>yarn.timeline-service.webapp.address</name>
-        <value>hadoop:8188</value>
+        <value>0.0.0.0:8188</value>
     </property>
     <property>
         <name>yarn.timeline-service.webapp.https.address</name>
-        <value>hadoop:8190</value>
+        <value>0.0.0.0:8190</value>
     </property>
     <property>
         <name>yarn.timeline-service.http-cross-origin.enabled</name>

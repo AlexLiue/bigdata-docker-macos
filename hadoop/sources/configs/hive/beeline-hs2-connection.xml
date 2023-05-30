@@ -12,12 +12,12 @@
 
     <property>
         <name>beeline.hs2.jdbc.url.tcpUrl</name>
-        <value>jdbc:hive2://hadoop:10000/default</value>
+        <value>jdbc:hive2://127.0.0.1:10000/default</value>
     </property>
 
     <property>
         <name>beeline.hs2.jdbc.url.httpUrl</name>
-        <value>jdbc:hive2://hadoop:10000/default;transportMode=http;httpPath=cliservice</value>
+        <value>jdbc:hive2://127.0.0.1:10000/default;transportMode=http;httpPath=cliservice</value>
     </property>
     <property>
         <name>beeline.hs2.jdbc.url.default</name>

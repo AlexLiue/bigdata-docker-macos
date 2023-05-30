@@ -4,7 +4,7 @@
 
     <property>
         <name>tez.lib.uris</name>
-        <value>hdfs://hadoop:8020/apps/tez/tez.tar.gz</value>
+        <value>hdfs://0.0.0.0:8020/apps/tez/tez.tar.gz</value>
     </property>
     <property>
         <name>tez.use.cluster.hadoop-libs</name>
@@ -51,7 +51,7 @@
     <property>
         <description>URL for where the Tez UI is hosted</description>
         <name>tez.tez-ui.history-url.base</name>
-        <value>http://hadoop:9999/tez-ui/</value>
+        <value>http://0.0.0.0:9999/tez-ui/</value>
     </property>
 
 </configuration>

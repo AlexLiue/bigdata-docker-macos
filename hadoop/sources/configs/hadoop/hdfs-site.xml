@@ -20,11 +20,11 @@
 
     <property>
         <name>dfs.secondary.http.address</name>
-        <value>hadoop:50090</value>
+        <value>0.0.0.0:50090</value>
     </property>
     <property>
         <name>dfs.http.address</name>
-        <value>hadoop:50070</value>
+        <value>0.0.0.0:50070</value>
     </property>
 
     <property>

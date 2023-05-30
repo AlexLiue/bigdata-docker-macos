@@ -13,14 +13,14 @@ CONTAINER ID   IMAGE             COMMAND                  CREATED         STATUS
 dbee109f50b6   zookeeper:3.5.9   "/docker-entrypoint.…"   2 minutes ago   Up 2 minutes             0.0.0.0:2181->2181/tcp, 0.0.0.0:2888->2888/tcp, 0.0.0.0:3888->3888/tcp, 0.0.0.0:8080->8080/tcp                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       zoo
 ```
 ### 环境IP地址总汇
-      - "hadoop:192.168.100.10"
+      - "0.0.0.0:192.168.100.10"
       - "doris:192.168.100.20"
       - "trino:192.168.100.21"
       - "redis:192.168.100.30"
 
 ### Hadoop 环境
 ```shell
-root@hadoop:/opt/run# ls -lrt
+root@0.0.0.0:/opt/run# ls -lrt
 total 0
 lrwxrwxrwx 1 root root 23 Feb 17 14:58 jdk8 -> /opt/installs/jdk-8u312
 lrwxrwxrwx 1 root root 25 Feb 17 14:58 jdk11 -> /opt/installs/jdk-11.0.13
@@ -36,7 +36,7 @@ lrwxrwxrwx 1 root root 26 Feb 17 14:59 flink -> /opt/installs/flink-1.14.3
 
 ### Kafka 环境
 ```shell
-root@hadoop:/opt/run# ls -rlt
+root@0.0.0.0:/opt/run# ls -rlt
 total 0
 lrwxrwxrwx 1 root root 31 Feb 17 07:18 jdk8 -> /opt/installs/openjdk-8u312-b07
 lrwxrwxrwx 1 root root 13 Feb 17 07:18 jdk -> /opt/run/jdk8
@@ -149,7 +149,7 @@ show variables like 'log_bin';
 ## Hive 
 
 ```shell
-beeline -u jdbc:hive2://hadoop:10000/default -nhive -phive
+beeline -u jdbc:hive2://0.0.0.0:10000/default -nhive -phive
 
 ```
 
@@ -160,12 +160,12 @@ docker rm presto
 docker rmi bigdata_presto
 
 
-presto-cli --server hadoop:8080 --catalog hive --schema test
+presto-cli --server 0.0.0.0:8080 --catalog hive --schema test
 
 
 git clone https://github.com/prestodb/presto prestodb
 
-/opt/run/hive/bin/beeline -u jdbc:hive2://hadoop:10000/default -nhive -phive
+/opt/run/hive/bin/beeline -u jdbc:hive2://0.0.0.0:10000/default -nhive -phive
 
  hive --hiveconf hive.root.logger=DEBUG,console
 
@@ -176,8 +176,8 @@ git clone https://github.com/prestodb/presto prestodb
 ## 问题说明
 ```text
 HDFS  需要 开放 9866 端口,否则会报错
-23/05/09 10:57:31 DEBUG DataStreamer: pipeline = [DatanodeInfoWithStorage[hadoop:9866,DS-a5440298-d121-4b60-af50-ff5c1e028305,DISK]], blk_1073741942_1118
-23/05/09 10:57:31 DEBUG DataStreamer: Connecting to datanode hadoop:9866
+23/05/09 10:57:31 DEBUG DataStreamer: pipeline = [DatanodeInfoWithStorage[0.0.0.0:9866,DS-a5440298-d121-4b60-af50-ff5c1e028305,DISK]], blk_1073741942_1118
+23/05/09 10:57:31 DEBUG DataStreamer: Connecting to datanode 0.0.0.0:9866
 23/05/09 10:57:31 WARN DataStreamer: Exception in createBlockOutputStream blk_1073741942_1118
 java.net.ConnectException: Connection refused
 	at sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)

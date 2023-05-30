@@ -117,7 +117,7 @@ c142ce36241f   bigdata-hadoop   "/usr/bin/bash /opt/…"   About an hour ago   U
 
 ## Container Compose List
 ```
-root@hadoop:/opt/run# ls -lrt /opt/run/
+root@0.0.0.0:/opt/run# ls -lrt /opt/run/
 total 0
 lrwxrwxrwx 1 root  root   23 May 28 16:19 jdk8 -> /opt/installs/jdk-8u312
 lrwxrwxrwx 1 root  root   25 May 28 16:19 jdk11 -> /opt/installs/jdk-11.0.13

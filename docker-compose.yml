@@ -8,7 +8,6 @@ networks:
           gateway: 192.168.100.1
 
 services:
-
   hadoop:
     build:
       context: hadoop
@@ -33,7 +32,7 @@ services:
       - SPARK3_HOME=/opt/run/spark3
       - SPARK_MASTER_WEBUI_PORT=8090
       - FLINK_HOME=/opt/run/flink
-      - PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/run/jdk/bin:/opt/run/zookeeper/bin:/opt/run/hadoop/bin:/opt/run/hbase/bin:/opt/run/hive/bin:/opt/run/kafka/bin
+      - PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/run/jdk/bin:/opt/run/zookeeper/bin:/opt/run/hadoop/bin:/opt/run/hbase/bin:/opt/run/hive/bin:/opt/run/kafka/bin:/opt/run/spark/bin:/opt/run/flink/bin
       - USE_CHINA_TUNA_MIRRORS=true
     ports:
       # SSH
@@ -98,9 +97,6 @@ services:
       - 6379:6379
     container_name: redis
     hostname: redis
-    networks:
-      docker:
-        ipv4_address: 192.168.100.30
     extra_hosts:
       - "hadoop:192.168.100.10"
       - "doris:192.168.100.20"
