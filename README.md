@@ -5,13 +5,16 @@
 # BigData Docker Env For MacOS M1
 [BigData Run Env](https://github.com/AlexLiue/bigdata-docker-macos)  (Hadoop, Spark, Hive, Flink, Kafka, Zookeeper, Debezium, Mysql), MacOS M1 环境.
 
-## GitHub TAG LIST     
+## GitHub TAGS
 [3.1.3-0.1](https://github.com/AlexLiue/bigdata-docker-macos/tree/3.1.3-0.1)
 [3.1.3-0.2](https://github.com/AlexLiue/bigdata-docker-macos/tree/3.1.3-0.2)
 
+## Docker Hub 
+[https://hub.docker.com/r/alexliuee/hadoop-aarch64](https://hub.docker.com/r/alexliuee/hadoop-aarch64)  
+
 ## Step1. Create  Docker Compose File ` docker-compose.yml`.
 ### ARGS
-USE_CHINA_TUNA_MIRRORS: flag, weather use tsinghua mirror [http://mirrors.tuna.tsinghua.edu.cn]
+- `USE_CHINA_TUNA_MIRRORS`: flag, weather use tsinghua mirror [http://mirrors.tuna.tsinghua.edu.cn]   
 ```shell
 networks:
   docker:
