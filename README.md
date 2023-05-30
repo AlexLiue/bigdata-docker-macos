@@ -2,48 +2,152 @@
 # BigData Docker Env For MacOS M1 
 大数据平台 Docker 集成基础环境(Hadoop, Spark, Hive, Flink, Kafka, Zookeeper, Debezium, Mysql), MacOS M1 环境.
 
+# BigData Docker Env For MacOS M1
+[BigData Run Env](https://github.com/AlexLiue/bigdata-docker-macos)  (Hadoop, Spark, Hive, Flink, Kafka, Zookeeper, Debezium, Mysql), MacOS M1 环境.
 
-###  Docker 运行示列
+## GitHub TAG LIST     
+[3.1.3-0.1](https://github.com/AlexLiue/bigdata-docker-macos/tree/3.1.3-0.1)
+[3.1.3-0.2](https://github.com/AlexLiue/bigdata-docker-macos/tree/3.1.3-0.2)
+
+## Step1. Create  Docker Compose File ` docker-compose.yml`.
+### ARGS
+USE_CHINA_TUNA_MIRRORS: flag, weather use tsinghua mirror [http://mirrors.tuna.tsinghua.edu.cn]
 ```shell
- > docker ps
-CONTAINER ID   IMAGE             COMMAND                  CREATED         STATUS                   PORTS                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                NAMES
-761f0ac96d8e   bigdata_hadoop    "./entrypoint.sh"        2 minutes ago   Up 2 minutes (healthy)   localhost:4040->4040/tcp, localhost:6123->6123/tcp, localhost:8020->8020/tcp, localhost:8030-8033->8030-8033/tcp, localhost:8040-8042->8040-8042/tcp, localhost:8082->8082/tcp, localhost:8088->8088/tcp, localhost:8090->8090/tcp, localhost:8480->8480/tcp, localhost:8485->8485/tcp, localhost:9083->9083/tcp, localhost:10000->10000/tcp, localhost:10020->10020/tcp, localhost:16000->16000/tcp, localhost:16010->16010/tcp, localhost:16020->16020/tcp, localhost:16030->16030/tcp, localhost:18080->18080/tcp, localhost:19888->19888/tcp, localhost:50010->50010/tcp, localhost:50020->50020/tcp, localhost:50070->50070/tcp, localhost:50075->50075/tcp, localhost:50475->50475/tcp, localhost:1022->22/tcp   hadoop
-917fc1be0613   bigdata_kafka     "./entrypoint.sh"        2 minutes ago   Up 2 minutes (healthy)   localhost:8081->8081/tcp, localhost:8083->8083/tcp, localhost:9092->9092/tcp                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               kafka
-8a66ecb75149   bigdata_mysql     "/entrypoint.sh mysq…"   2 minutes ago   Up 2 minutes (healthy)   localhost:3306->3306/tcp, localhost:33060-33061->33060-33061/tcp                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         mysql
-dbee109f50b6   zookeeper:3.5.9   "/docker-entrypoint.…"   2 minutes ago   Up 2 minutes             localhost:2181->2181/tcp, localhost:2888->2888/tcp, localhost:3888->3888/tcp, localhost:8080->8080/tcp                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       zoo
-```
-### 环境IP地址总汇
-      - "localhost:192.168.100.10"
+networks:
+  docker:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.100.0/24
+          gateway: 192.168.100.1
+
+services:
+  hadoop:
+    build:
+      context: hadoop
+    container_name: hadoop
+    hostname: hadoop
+    networks:
+      docker:
+        ipv4_address: 192.168.100.10
+    extra_hosts:
       - "doris:192.168.100.20"
       - "trino:192.168.100.21"
       - "redis:192.168.100.30"
+    environment:
+      - USER=root
+      - JAVA_HOME=/opt/run/jdk
+      - ZOOKEEPER_HOME=/opt/run/zookeeper
+      - HADOOP_HOME=/opt/run/hadoop
+      - HADOOP_CONF_DIR=/opt/run/hadoop/etc/hadoop
+      - HBASE_HOME=/opt/run/hbase
+      - HIVE_HOME=/opt/run/hive
+      - SPARK2_HOME=/opt/run/spark
+      - SPARK3_HOME=/opt/run/spark3
+      - SPARK_MASTER_WEBUI_PORT=8090
+      - FLINK_HOME=/opt/run/flink
+      - PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/run/jdk/bin:/opt/run/zookeeper/bin:/opt/run/hadoop/bin:/opt/run/hbase/bin:/opt/run/hive/bin:/opt/run/kafka/bin:/opt/run/spark/bin:/opt/run/flink/bin
+      - USE_CHINA_TUNA_MIRRORS=true
+    ports:
+      # SSH
+      - "1022:22"
+      # MYSQL
+      - "3306:3306"
+      # Zookeeper
+      - "2181:2181"
+      - "2888:2888"
+      - "3888:3888"
+      - "8080:8080"
+      # HDFS
+      - "8020:8020"
+      - "50070:50070"
+      - "50010:50010"
+      - "50075:50075"
+      - "50475:50475"
+      - "50020:50020"
+      - "8485:8485"
+      - "8480:8480"
+      - "9866:9866"
+      # YARN
+      - "8030:8030"
+      - "8031:8031"
+      - "8032:8032"
+      - "8033:8033"
+      - "8040:8040"
+      - "8042:8042"
+      - "8041:8041"
+      - "8088:8088"
+      - "10020:10020"
+      - "19888:19888"
+      # HIVE
+      - "9083:9083"
+      - "10000:10000"
+      # TEZ
+      - "8188:8188"
+      - "9999:9999"
+      # HBASE
+      - "16000:16000"
+      - "16010:16010"
+      - "16020:16020"
+      - "16030:16030"
+      # KAFKA BOOTSTRAP
+      - "9092:9092"
+      # CONFLUENT SCHEMA REGISTRY
+      - "8081:8081"
+      # KAFKA AVRO CONNECTOR
+      - "8083:8083"
+      # SPARK
+      - "8090:8090"
+      - "4040:4040"
+      - "18080:18080"
+      # FLINK
+      - "6123:6123"
+      - "8082:8082"
 
-### Hadoop 环境
-```shell
-root@localhost:/opt/run# ls -lrt
-total 0
-lrwxrwxrwx 1 root root 23 Feb 17 14:58 jdk8 -> /opt/installs/jdk-8u312
-lrwxrwxrwx 1 root root 25 Feb 17 14:58 jdk11 -> /opt/installs/jdk-11.0.13
-lrwxrwxrwx 1 root root 13 Feb 17 14:58 jdk -> /opt/run/jdk8
-lrwxrwxrwx 1 root root 26 Feb 17 14:58 hadoop -> /opt/installs/hadoop-2.7.5
-lrwxrwxrwx 1 root root 25 Feb 17 14:58 hbase -> /opt/installs/hbase-1.4.9
-lrwxrwxrwx 1 root root 24 Feb 17 14:58 hive -> /opt/installs/hive-3.1.1
-lrwxrwxrwx 1 root root 39 Feb 17 14:58 spark2 -> /opt/installs/spark-2.4.8-bin-hadoop2.7
-lrwxrwxrwx 1 root root 39 Feb 17 14:59 spark3 -> /opt/installs/spark-3.1.2-bin-hadoop2.7
-lrwxrwxrwx 1 root root 15 Feb 17 14:59 spark -> /opt/run/spark3
-lrwxrwxrwx 1 root root 26 Feb 17 14:59 flink -> /opt/installs/flink-1.14.3
+```
+## Step2. Launch Docker Compose
+```
+docker compose up
 ```
 
-### Kafka 环境
-```shell
-root@localhost:/opt/run# ls -rlt
-total 0
-lrwxrwxrwx 1 root root 31 Feb 17 07:18 jdk8 -> /opt/installs/openjdk-8u312-b07
-lrwxrwxrwx 1 root root 13 Feb 17 07:18 jdk -> /opt/run/jdk8
-lrwxrwxrwx 1 root root 30 Feb 17 07:18 kafka -> /opt/installs/kafka_2.12-2.6.3
-lrwxrwxrwx 1 root root 29 Feb 17 07:18 confluent -> /opt/installs/confluent-7.0.1
-lrwxrwxrwx 1 root root 28 Feb 17 07:18 debezium -> /opt/installs/debezium-1.8.0
+## Step3. Check  Run Status
+
 ```
+# docker ps
+CONTAINER ID   IMAGE            COMMAND                   CREATED          STATUS                            PORTS                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    NAMES
+c142ce36241f   bigdata-hadoop   "/usr/bin/bash /opt/…"   About an hour ago   Up 12 minutes (healthy)   localhost:2181->2181/tcp, localhost:2888->2888/tcp, localhost:3888->3888/tcp, localhost:4040->4040/tcp, localhost:6123->6123/tcp, localhost:8020->8020/tcp, localhost:8030-8033->8030-8033/tcp, localhost:8040-8042->8040-8042/tcp, localhost:8080-8083->8080-8083/tcp, localhost:8088->8088/tcp, localhost:8090->8090/tcp, localhost:8188->8188/tcp, localhost:8480->8480/tcp, localhost:8485->8485/tcp, localhost:9083->9083/tcp, localhost:9092->9092/tcp, localhost:9866->9866/tcp, localhost:9999-10000->9999-10000/tcp, localhost:10020->10020/tcp, localhost:16000->16000/tcp, localhost:16010->16010/tcp, localhost:16020->16020/tcp, localhost:16030->16030/tcp, localhost:18080->18080/tcp, localhost:19888->19888/tcp, localhost:50010->50010/tcp, localhost:50020->50020/tcp, localhost:50070->50070/tcp, localhost:50075->50075/tcp, localhost:50475->50475/tcp, localhost:1022->22/tcp   hadoop
+```
+
+## Step4. Add IP Host Route , Edit `/etc/hosts`
+```shell
+127.0.0.1 hadoop
+```
+
+## Container Compose List
+```
+root@localhost:/opt/run# ls -lrt /opt/run/
+total 0
+lrwxrwxrwx 1 root  root   23 May 28 16:19 jdk8 -> /opt/installs/jdk-8u312
+lrwxrwxrwx 1 root  root   25 May 28 16:19 jdk11 -> /opt/installs/jdk-11.0.13
+lrwxrwxrwx 1 root  root   13 May 28 16:19 jdk -> /opt/run/jdk8
+lrwxrwxrwx 1 root  root   36 May 28 16:19 zookeeper -> /opt/installs/apache-zookeeper-3.7.1
+lrwxrwxrwx 1 root  root   26 May 28 16:19 mysql -> /opt/installs/mysql-8.0.33
+lrwxrwxrwx 1 root  root   25 May 28 16:20 scala -> /opt/installs/scala-3.2.2
+lrwxrwxrwx 1 root  root   26 May 28 16:20 hadoop -> /opt/installs/hadoop-3.1.3
+lrwxrwxrwx 1 hdfs  hadoop 34 May 28 16:20 tomcat -> /opt/installs/apache-tomcat-9.0.74
+lrwxrwxrwx 1 hdfs  hadoop 24 May 28 16:20 tez -> /opt/installs/tez-0.10.1
+lrwxrwxrwx 1 hdfs  hadoop 24 May 28 16:20 hive -> /opt/installs/hive-3.1.3
+lrwxrwxrwx 1 hbase hadoop 25 May 28 16:20 hbase -> /opt/installs/hbase-1.4.9
+lrwxrwxrwx 1 root  root   44 May 28 16:20 spark2 -> /opt/installs/spark-2.4.8-bin-without-hadoop
+lrwxrwxrwx 1 root  root   39 May 28 16:20 spark3 -> /opt/installs/spark-3.2.4-bin-hadoop3.2
+lrwxrwxrwx 1 spark hadoop 15 May 28 16:20 spark -> /opt/run/spark3
+lrwxrwxrwx 1 flink hadoop 26 May 28 16:20 flink -> /opt/installs/flink-1.17.0
+lrwxrwxrwx 1 root  root   30 May 28 16:20 kafka -> /opt/installs/kafka_2.12-2.6.3
+lrwxrwxrwx 1 root  root   29 May 28 16:20 confluent -> /opt/installs/confluent-7.0.1
+lrwxrwxrwx 1 root  root   28 May 28 16:20 debezium -> /opt/installs/debezium-1.9.4
+```
+
 
 ### 清理 Docker 所有内容
 ```shell
@@ -57,32 +161,6 @@ docker rm hadoop
 docker rmi bigdata-hadoop
 
 
-
-docker compose stop presto
-docker rm presto
-docker compose stop hadoop
-docker rm hadoop
-docker compose stop kafka
-docker rm kafka
-docker compose stop zoo
-docker rm zoo
-docker compose stop mysql
-docker rm mysql
-
-
-
-docker compose up -d hadoop
-
-
-
-
-docker rmi bigdata_kafka
-docker rmi bigdata-mysql
-docker rmi bigdata_redis
-docker rmi bigdata_presto
-docker rmi bigdata-hadoop
-
-docker compose up -d
 
 ```
 
@@ -121,14 +199,7 @@ docker network inspect bridge
 ]
 
 
- docker network rm cd88a6fb7584
- docker network rm 37d600a17aa4
- 
-cd88a6fb7584   bigdata_bridge-net   bridge    local
-37d600a17aa4   bigdata_default      bridge    local
-19b9116def54   bridge               bridge    local
-
-
+docker network rm cd88a6fb7584
 ```
 
 ### 查询 volume
@@ -145,11 +216,9 @@ show variables like 'log_bin';
 ```
 
 
-
-## Hive 
-
+## Hive
 ```shell
-beeline -u jdbc:hive2://localhost:10000/default -nhive -phive
+beeline -u jdbc:hive2://localhost:10000/default -nhive -phive_password
 
 ```
 
@@ -159,37 +228,9 @@ beeline -u jdbc:hive2://localhost:10000/default -nhive -phive
 docker rm presto
 docker rmi bigdata_presto
 
-
 presto-cli --server localhost:8080 --catalog hive --schema test
 
-
-git clone https://github.com/prestodb/presto prestodb
-
-/opt/run/hive/bin/beeline -u jdbc:hive2://localhost:10000/default -nhive -phive
-
- hive --hiveconf hive.root.logger=DEBUG,console
+hive --hiveconf hive.root.logger=DEBUG,console
 
 ```
 
-
-
-## 问题说明
-```text
-HDFS  需要 开放 9866 端口,否则会报错
-23/05/09 10:57:31 DEBUG DataStreamer: pipeline = [DatanodeInfoWithStorage[localhost:9866,DS-a5440298-d121-4b60-af50-ff5c1e028305,DISK]], blk_1073741942_1118
-23/05/09 10:57:31 DEBUG DataStreamer: Connecting to datanode localhost:9866
-23/05/09 10:57:31 WARN DataStreamer: Exception in createBlockOutputStream blk_1073741942_1118
-java.net.ConnectException: Connection refused
-	at sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
-	at sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:716)
-	at org.apache.hadoop.net.SocketIOWithTimeout.connect(SocketIOWithTimeout.java:206)
-	at org.apache.hadoop.net.NetUtils.connect(NetUtils.java:586)
-	at org.apache.hadoop.hdfs.DataStreamer.createSocketForPipeline(DataStreamer.java:253)
-	at org.apache.hadoop.hdfs.DataStreamer.createBlockOutputStream(DataStreamer.java:1757)
-	at org.apache.hadoop.hdfs.DataStreamer.nextBlockOutputStream(DataStreamer.java:1711)
-	at org.apache.hadoop.hdfs.DataStreamer.run(DataStreamer.java:707)
-org.apache.hadoop.ipc.RemoteException(java.io.IOException): File /user/hdfs/.sparkStaging/application_1683539618806_0010/__spark_conf__.zip could only be written to 0 of the 1 minReplication nodes. There are 1 datanode(s) running and 1 node(s) are excluded in this operation.
-	at org.apache.hadoop.hdfs.server.blockmanagement.BlockManager.chooseTarget4NewBlock(BlockManager.java:2205)
-	at org.apache.hadoop.hdfs.server.namenode.FSDirWriteFileOp.chooseTargetForNewBlock(FSDirWriteFileOp.java:294)
-
-```
