@@ -395,6 +395,7 @@ if [ ! -d "/opt/run/kafka" ] ;then
   rm -f /opt/sources/packages/kafka_2.12-2.6.3.tgz
   ln -s /opt/installs/kafka_2.12-2.6.3 /opt/run/kafka
   cp -rf /opt/sources/configs/kafka/config/* /opt/run/kafka/config
+  cp -rf /opt/sources/configs/kafka/example /opt/run/kafka/
   find /opt/run/kafka/config -type f -print0  | xargs -0 -I {} sed -i 's/localhost/hadoop/g' {}
 
   echo "" >>/etc/profile

@@ -1,4 +1,6 @@
 ## For Kafka Connector
+set -x
+
 mysql -hhadoop -uroot -proot_password <<EOF
   CREATE DATABASE IF NOT EXISTS db_utf8_test;
   CREATE DATABASE IF NOT EXISTS db_gbk_test;

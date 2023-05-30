@@ -6,7 +6,8 @@ GitHub TAG LIST
 
 
 ## Step1. Create  Docker Compose File ` docker-compose.yml`.
-
+### ARGS
+USE_CHINA_TUNA_MIRRORS: flag, weather use tsinghua mirror [http://mirrors.tuna.tsinghua.edu.cn]
 ```shell
 networks:
   docker:
@@ -16,9 +17,11 @@ networks:
       config:
         - subnet: 192.168.100.0/24
           gateway: 192.168.100.1
+
 services:
   hadoop:
-    image: alexliuee/hadoop-aarch64:last
+    build:
+      context: hadoop
     container_name: hadoop
     hostname: hadoop
     networks:
@@ -40,7 +43,8 @@ services:
       - SPARK3_HOME=/opt/run/spark3
       - SPARK_MASTER_WEBUI_PORT=8090
       - FLINK_HOME=/opt/run/flink
-      - PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/run/jdk/bin:/opt/run/zookeeper/bin:/opt/run/hadoop/bin:/opt/run/hbase/bin:/opt/run/hive/bin:/opt/run/kafka/bin
+      - PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/run/jdk/bin:/opt/run/zookeeper/bin:/opt/run/hadoop/bin:/opt/run/hbase/bin:/opt/run/hive/bin:/opt/run/kafka/bin:/opt/run/spark/bin:/opt/run/flink/bin
+      - USE_CHINA_TUNA_MIRRORS=true
     ports:
       # SSH
       - "1022:22"
@@ -96,6 +100,7 @@ services:
       # FLINK
       - "6123:6123"
       - "8082:8082"
+
 ```
 ## Step2. Launch Docker Compose
 ```

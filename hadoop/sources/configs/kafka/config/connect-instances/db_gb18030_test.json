@@ -5,7 +5,7 @@
     "database.hostname": "hadoop",
     "database.port": "3306",
     "database.user": "root",
-    "database.password": "slave_password",
+    "database.password": "root_password",
     "database.server.id": "4001",
     "database.server.name": "test",
     "database.include.list": "db_gb18030_test",

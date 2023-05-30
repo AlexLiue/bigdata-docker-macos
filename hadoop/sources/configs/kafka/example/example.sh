@@ -1,6 +1,10 @@
 #!/bin/bash
 ## Create by PcLiu at 2022/01/25
 
+set -x
+
+/bin/bash create_test_table.sh
+
 curl -X GET hadoop:8083/connector-plugins | jq
 
 curl -X GET hadoop:8083/connectors/db_utf8 | jq
@@ -23,10 +27,17 @@ curl -X POST -H "Content-Type:application/json" hadoop:8083/connectors -d @/opt/
 curl -X POST -H "Content-Type:application/json" hadoop:8083/connectors -d @/opt/run/kafka/config/connect-instances/db_gbk_test.json
 curl -X POST -H "Content-Type:application/json" hadoop:8083/connectors -d @/opt/run/kafka/config/connect-instances/db_gb18030_test.json
 
+curl -X GET -H "Content-Type:application/json" hadoop:8083/connectors
+
 /opt/run/kafka/bin/kafka-topics.sh --bootstrap-server hadoop:9092 --list
 
-/opt/run/confluent/bin/kafka-avro-console-consumer --max-messages 10 --bootstrap-server hadoop:9092 --property schema.registry.url=http://hadoop:8081 --topic test.db_gb18030_test.tbl_test --from-beginning
+/opt/run/confluent/bin/kafka-avro-console-consumer --max-messages 1 --bootstrap-server hadoop:9092 --property schema.registry.url=http://hadoop:8081 --topic test.db_utf8_test.tbl_test_1 --from-beginning
+/opt/run/confluent/bin/kafka-avro-console-consumer --max-messages 1 --bootstrap-server hadoop:9092 --property schema.registry.url=http://hadoop:8081 --topic test.db_gbk_test.tbl_test_1 --from-beginning
+/opt/run/confluent/bin/kafka-avro-console-consumer --max-messages 1 --bootstrap-server hadoop:9092 --property schema.registry.url=http://hadoop:8081 --topic test.db_gb18030_test.tbl_test_1 --from-beginning
 
-/opt/run/confluent/bin/kafka-topics --describe --zookeeper hadoop:2181 --topic dbserver1.test.tbl_test
+
+/opt/run/confluent/bin/kafka-topics --describe --bootstrap-server hadoop:9092 --topic test.db_gb18030_test.tbl_test_1
+/opt/run/confluent/bin/kafka-topics --describe --bootstrap-server hadoop:9092 --topic test.db_gb18030_test.tbl_test_1
+/opt/run/confluent/bin/kafka-topics --describe --bootstrap-server hadoop:9092 --topic test.db_gb18030_test.tbl_test_1
 
 curl -X GET http://hadoop:8081/subjects
