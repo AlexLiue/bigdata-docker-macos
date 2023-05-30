@@ -159,18 +159,7 @@ docker system prune --all --volumes
 docker compose stop hadoop
 docker rm hadoop
 docker rmi bigdata-hadoop
-
-
-
 ```
-
-create table tbl_test(id int, name string);
-insert into tbl_test(id,name) values(1,'a');
-insert into tbl_test(id,name) values(2,'b');
-insert into tbl_test(id,name) values(3,'c');
-select * from default.tbl_test;
-select sum(id) from default.tbl_test;
-
 
 ###  进入容器
 ```shell
