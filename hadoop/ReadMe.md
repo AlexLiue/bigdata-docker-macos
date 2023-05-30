@@ -143,3 +143,4 @@ lrwxrwxrwx 1 root  root   30 May 28 16:20 kafka -> /opt/installs/kafka_2.12-2.6.
 lrwxrwxrwx 1 root  root   29 May 28 16:20 confluent -> /opt/installs/confluent-7.0.1
 lrwxrwxrwx 1 root  root   28 May 28 16:20 debezium -> /opt/installs/debezium-1.9.4
 ```
+d
