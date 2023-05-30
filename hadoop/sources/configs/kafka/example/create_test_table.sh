@@ -1,12 +1,12 @@
 ## For Kafka Connector
-mysql -hmysql -uroot -proot_password <<EOF
+mysql -hhadoop -uroot -proot_password <<EOF
   CREATE DATABASE IF NOT EXISTS db_utf8_test;
   CREATE DATABASE IF NOT EXISTS db_gbk_test;
   CREATE DATABASE IF NOT EXISTS db_gb18030_test;
 EOF
 
 ## Init Test Data
-mysql -hmysql -uroot -proot_password <<EOF
+mysql -hhadoop -uroot -proot_password <<EOF
   USE db_utf8_test;
   CREATE TABLE tbl_test_1 (
     ID int NOT NULL AUTO_INCREMENT,
@@ -21,7 +21,7 @@ mysql -hmysql -uroot -proot_password <<EOF
   INSERT INTO tbl_test_1 (C1, C2, C3, C4) VALUES ('v1', 'v2', '1', '12');
 EOF
 
-mysql -hmysql -uroot -proot_password <<EOF
+mysql -hhadoop -uroot -proot_password <<EOF
   USE db_gbk_test;
   CREATE TABLE tbl_test_1 (
     ID int NOT NULL AUTO_INCREMENT,
@@ -36,7 +36,7 @@ mysql -hmysql -uroot -proot_password <<EOF
   INSERT INTO tbl_test_1 (C1, C2, C3, C4) VALUES ('v1', 'v2', '1', '12');
 EOF
 
-mysql -hmysql -uroot -proot_password <<EOF
+mysql -hhadoop -uroot -proot_password <<EOF
   USE db_gb18030_test;
   CREATE TABLE tbl_test_1 (
     ID int NOT NULL AUTO_INCREMENT,
@@ -51,8 +51,10 @@ mysql -hmysql -uroot -proot_password <<EOF
   INSERT INTO tbl_test_1 (C1, C2, C3, C4) VALUES ('v1', 'v2', '1', '12');
 EOF
 
-mysql -hmysql -uroot -proot_password <<EOF
-  CREATE USER salve IDENTIFIED BY 'salve';
+mysql -hhadoop -uroot -proot_password <<EOF
+  CREATE USER salve IDENTIFIED  WITH mysql_native_password BY 'salve_password';
+  ALTER USER 'salve'@'%' IDENTIFIED WITH mysql_native_password BY 'salve_password';
   GRANT SELECT, REPLICATION SLAVE, REPLICATION CLIENT ON *.* TO 'salve'@'%';
   FLUSH PRIVILEGES;
+
 EOF

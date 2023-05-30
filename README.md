@@ -7,20 +7,20 @@
 ```shell
  > docker ps
 CONTAINER ID   IMAGE             COMMAND                  CREATED         STATUS                   PORTS                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                NAMES
-761f0ac96d8e   bigdata_hadoop    "./entrypoint.sh"        2 minutes ago   Up 2 minutes (healthy)   0.0.0.0:4040->4040/tcp, 0.0.0.0:6123->6123/tcp, 0.0.0.0:8020->8020/tcp, 0.0.0.0:8030-8033->8030-8033/tcp, 0.0.0.0:8040-8042->8040-8042/tcp, 0.0.0.0:8082->8082/tcp, 0.0.0.0:8088->8088/tcp, 0.0.0.0:8090->8090/tcp, 0.0.0.0:8480->8480/tcp, 0.0.0.0:8485->8485/tcp, 0.0.0.0:9083->9083/tcp, 0.0.0.0:10000->10000/tcp, 0.0.0.0:10020->10020/tcp, 0.0.0.0:16000->16000/tcp, 0.0.0.0:16010->16010/tcp, 0.0.0.0:16020->16020/tcp, 0.0.0.0:16030->16030/tcp, 0.0.0.0:18080->18080/tcp, 0.0.0.0:19888->19888/tcp, 0.0.0.0:50010->50010/tcp, 0.0.0.0:50020->50020/tcp, 0.0.0.0:50070->50070/tcp, 0.0.0.0:50075->50075/tcp, 0.0.0.0:50475->50475/tcp, 0.0.0.0:1022->22/tcp   hadoop
-917fc1be0613   bigdata_kafka     "./entrypoint.sh"        2 minutes ago   Up 2 minutes (healthy)   0.0.0.0:8081->8081/tcp, 0.0.0.0:8083->8083/tcp, 0.0.0.0:9092->9092/tcp                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               kafka
-8a66ecb75149   bigdata_mysql     "/entrypoint.sh mysq…"   2 minutes ago   Up 2 minutes (healthy)   0.0.0.0:3306->3306/tcp, 0.0.0.0:33060-33061->33060-33061/tcp                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         mysql
-dbee109f50b6   zookeeper:3.5.9   "/docker-entrypoint.…"   2 minutes ago   Up 2 minutes             0.0.0.0:2181->2181/tcp, 0.0.0.0:2888->2888/tcp, 0.0.0.0:3888->3888/tcp, 0.0.0.0:8080->8080/tcp                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       zoo
+761f0ac96d8e   bigdata_hadoop    "./entrypoint.sh"        2 minutes ago   Up 2 minutes (healthy)   localhost:4040->4040/tcp, localhost:6123->6123/tcp, localhost:8020->8020/tcp, localhost:8030-8033->8030-8033/tcp, localhost:8040-8042->8040-8042/tcp, localhost:8082->8082/tcp, localhost:8088->8088/tcp, localhost:8090->8090/tcp, localhost:8480->8480/tcp, localhost:8485->8485/tcp, localhost:9083->9083/tcp, localhost:10000->10000/tcp, localhost:10020->10020/tcp, localhost:16000->16000/tcp, localhost:16010->16010/tcp, localhost:16020->16020/tcp, localhost:16030->16030/tcp, localhost:18080->18080/tcp, localhost:19888->19888/tcp, localhost:50010->50010/tcp, localhost:50020->50020/tcp, localhost:50070->50070/tcp, localhost:50075->50075/tcp, localhost:50475->50475/tcp, localhost:1022->22/tcp   hadoop
+917fc1be0613   bigdata_kafka     "./entrypoint.sh"        2 minutes ago   Up 2 minutes (healthy)   localhost:8081->8081/tcp, localhost:8083->8083/tcp, localhost:9092->9092/tcp                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               kafka
+8a66ecb75149   bigdata_mysql     "/entrypoint.sh mysq…"   2 minutes ago   Up 2 minutes (healthy)   localhost:3306->3306/tcp, localhost:33060-33061->33060-33061/tcp                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         mysql
+dbee109f50b6   zookeeper:3.5.9   "/docker-entrypoint.…"   2 minutes ago   Up 2 minutes             localhost:2181->2181/tcp, localhost:2888->2888/tcp, localhost:3888->3888/tcp, localhost:8080->8080/tcp                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       zoo
 ```
 ### 环境IP地址总汇
-      - "0.0.0.0:192.168.100.10"
+      - "localhost:192.168.100.10"
       - "doris:192.168.100.20"
       - "trino:192.168.100.21"
       - "redis:192.168.100.30"
 
 ### Hadoop 环境
 ```shell
-root@0.0.0.0:/opt/run# ls -lrt
+root@localhost:/opt/run# ls -lrt
 total 0
 lrwxrwxrwx 1 root root 23 Feb 17 14:58 jdk8 -> /opt/installs/jdk-8u312
 lrwxrwxrwx 1 root root 25 Feb 17 14:58 jdk11 -> /opt/installs/jdk-11.0.13
@@ -36,7 +36,7 @@ lrwxrwxrwx 1 root root 26 Feb 17 14:59 flink -> /opt/installs/flink-1.14.3
 
 ### Kafka 环境
 ```shell
-root@0.0.0.0:/opt/run# ls -rlt
+root@localhost:/opt/run# ls -rlt
 total 0
 lrwxrwxrwx 1 root root 31 Feb 17 07:18 jdk8 -> /opt/installs/openjdk-8u312-b07
 lrwxrwxrwx 1 root root 13 Feb 17 07:18 jdk -> /opt/run/jdk8
@@ -149,7 +149,7 @@ show variables like 'log_bin';
 ## Hive 
 
 ```shell
-beeline -u jdbc:hive2://0.0.0.0:10000/default -nhive -phive
+beeline -u jdbc:hive2://localhost:10000/default -nhive -phive
 
 ```
 
@@ -160,12 +160,12 @@ docker rm presto
 docker rmi bigdata_presto
 
 
-presto-cli --server 0.0.0.0:8080 --catalog hive --schema test
+presto-cli --server localhost:8080 --catalog hive --schema test
 
 
 git clone https://github.com/prestodb/presto prestodb
 
-/opt/run/hive/bin/beeline -u jdbc:hive2://0.0.0.0:10000/default -nhive -phive
+/opt/run/hive/bin/beeline -u jdbc:hive2://localhost:10000/default -nhive -phive
 
  hive --hiveconf hive.root.logger=DEBUG,console
 
@@ -176,8 +176,8 @@ git clone https://github.com/prestodb/presto prestodb
 ## 问题说明
 ```text
 HDFS  需要 开放 9866 端口,否则会报错
-23/05/09 10:57:31 DEBUG DataStreamer: pipeline = [DatanodeInfoWithStorage[0.0.0.0:9866,DS-a5440298-d121-4b60-af50-ff5c1e028305,DISK]], blk_1073741942_1118
-23/05/09 10:57:31 DEBUG DataStreamer: Connecting to datanode 0.0.0.0:9866
+23/05/09 10:57:31 DEBUG DataStreamer: pipeline = [DatanodeInfoWithStorage[localhost:9866,DS-a5440298-d121-4b60-af50-ff5c1e028305,DISK]], blk_1073741942_1118
+23/05/09 10:57:31 DEBUG DataStreamer: Connecting to datanode localhost:9866
 23/05/09 10:57:31 WARN DataStreamer: Exception in createBlockOutputStream blk_1073741942_1118
 java.net.ConnectException: Connection refused
 	at sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)

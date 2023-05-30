@@ -107,7 +107,7 @@ docker compose up
 ```
 # docker ps
 CONTAINER ID   IMAGE            COMMAND                   CREATED          STATUS                            PORTS                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    NAMES
-c142ce36241f   bigdata-hadoop   "/usr/bin/bash /opt/…"   About an hour ago   Up 12 minutes (healthy)   0.0.0.0:2181->2181/tcp, 0.0.0.0:2888->2888/tcp, 0.0.0.0:3888->3888/tcp, 0.0.0.0:4040->4040/tcp, 0.0.0.0:6123->6123/tcp, 0.0.0.0:8020->8020/tcp, 0.0.0.0:8030-8033->8030-8033/tcp, 0.0.0.0:8040-8042->8040-8042/tcp, 0.0.0.0:8080-8083->8080-8083/tcp, 0.0.0.0:8088->8088/tcp, 0.0.0.0:8090->8090/tcp, 0.0.0.0:8188->8188/tcp, 0.0.0.0:8480->8480/tcp, 0.0.0.0:8485->8485/tcp, 0.0.0.0:9083->9083/tcp, 0.0.0.0:9092->9092/tcp, 0.0.0.0:9866->9866/tcp, 0.0.0.0:9999-10000->9999-10000/tcp, 0.0.0.0:10020->10020/tcp, 0.0.0.0:16000->16000/tcp, 0.0.0.0:16010->16010/tcp, 0.0.0.0:16020->16020/tcp, 0.0.0.0:16030->16030/tcp, 0.0.0.0:18080->18080/tcp, 0.0.0.0:19888->19888/tcp, 0.0.0.0:50010->50010/tcp, 0.0.0.0:50020->50020/tcp, 0.0.0.0:50070->50070/tcp, 0.0.0.0:50075->50075/tcp, 0.0.0.0:50475->50475/tcp, 0.0.0.0:1022->22/tcp   hadoop
+c142ce36241f   bigdata-hadoop   "/usr/bin/bash /opt/…"   About an hour ago   Up 12 minutes (healthy)   localhost:2181->2181/tcp, localhost:2888->2888/tcp, localhost:3888->3888/tcp, localhost:4040->4040/tcp, localhost:6123->6123/tcp, localhost:8020->8020/tcp, localhost:8030-8033->8030-8033/tcp, localhost:8040-8042->8040-8042/tcp, localhost:8080-8083->8080-8083/tcp, localhost:8088->8088/tcp, localhost:8090->8090/tcp, localhost:8188->8188/tcp, localhost:8480->8480/tcp, localhost:8485->8485/tcp, localhost:9083->9083/tcp, localhost:9092->9092/tcp, localhost:9866->9866/tcp, localhost:9999-10000->9999-10000/tcp, localhost:10020->10020/tcp, localhost:16000->16000/tcp, localhost:16010->16010/tcp, localhost:16020->16020/tcp, localhost:16030->16030/tcp, localhost:18080->18080/tcp, localhost:19888->19888/tcp, localhost:50010->50010/tcp, localhost:50020->50020/tcp, localhost:50070->50070/tcp, localhost:50075->50075/tcp, localhost:50475->50475/tcp, localhost:1022->22/tcp   hadoop
 ```
 
 ## Step4. Add IP Host Route , Edit `/etc/hosts`
@@ -117,7 +117,7 @@ c142ce36241f   bigdata-hadoop   "/usr/bin/bash /opt/…"   About an hour ago   U
 
 ## Container Compose List
 ```
-root@0.0.0.0:/opt/run# ls -lrt /opt/run/
+root@localhost:/opt/run# ls -lrt /opt/run/
 total 0
 lrwxrwxrwx 1 root  root   23 May 28 16:19 jdk8 -> /opt/installs/jdk-8u312
 lrwxrwxrwx 1 root  root   25 May 28 16:19 jdk11 -> /opt/installs/jdk-11.0.13
