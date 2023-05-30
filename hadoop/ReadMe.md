@@ -117,7 +117,7 @@ c142ce36241f   bigdata-hadoop   "/usr/bin/bash /opt/…"   About an hour ago   U
 
 ## Step4. Add IP Host Route , Edit `/etc/hosts`
 ```shell
-192.168.100.10 hadoop
+127.0.0.1 hadoop
 ```
 
 ## Container Compose List
