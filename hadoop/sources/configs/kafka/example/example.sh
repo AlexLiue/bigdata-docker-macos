@@ -3,8 +3,6 @@
 
 set -x
 
-/bin/bash create_test_table.sh
-
 curl -X GET hadoop:8083/connector-plugins | jq
 
 curl -X GET hadoop:8083/connectors/db_utf8 | jq
